@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Path of Exile Archipelago — Setup Guide</title>
+  <link rel="icon" href="images/poeAP.png">
+  <style>
+    @font-face {
+      font-family: 'Fontin';
+      src: url('fontin_pc/Fontin-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Fontin';
+      src: url('fontin_pc/Fontin-Bold.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Fontin';
+      src: url('fontin_pc/Fontin-Italic.otf') format('opentype');
+      font-weight: normal;
+      font-style: italic;
+    }
+    @font-face {
+      font-family: 'Fontin SmallCaps';
+      src: url('fontin_pc/Fontin-SmallCaps.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --bg2:      #141410;
+      --bg3:      #1c1c16;
+      --border:   #2e2e22;
+      --gold:     #c8a860;
+      --gold-dim: #7a6030;
+      --text:     #c8b99a;
+      --text-dim: #7a6a4a;
+      --green:    #a5f3a5;
+      --green-dim:#3a6a3a;
+      --red:      #e87070;
+      --blue:     #70aae8;
+      --purple:   #b070e8;
+      --teal:     #70e8c8;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Fontin', 'Georgia', serif;
+      font-size: 15px;
+      line-height: 1.65;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    #header {
+      background: var(--bg2);
+      border-bottom: 2px solid var(--gold-dim);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    #header-logo { height: 48px; width: auto; flex-shrink: 0; }
+    #header-titles { flex: 1; }
+    #header h1 { font-size: 1.4rem; color: var(--gold); letter-spacing: 0.06em; }
+    #header p  { font-size: 0.85rem; color: var(--text-dim); margin-top: 0.15rem; }
+    #header-nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.82rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    #header-nav a:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(135deg, #0a0a08 0%, #1a160a 60%, #0d0d0d 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    #hero h2 {
+      font-size: 2rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    #hero p {
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+    .hero-badge span { color: var(--gold); font-weight: bold; }
+    .btn-primary {
+      display: inline-block;
+      background: #1c1c10;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-family: 'Fontin', 'Georgia', serif;
+      font-size: 0.95rem;
+      padding: 0.6rem 1.6rem;
+      cursor: pointer;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .btn-primary:hover { background: #2a2a14; border-color: var(--gold); }
+
+    /* ── Page Layout ── */
+    #page { flex: 1; display: flex; max-width: 1100px; width: 100%; margin: 0 auto; padding: 2rem; gap: 2rem; }
+
+    /* ── Sidebar nav ── */
+    #sidenav {
+      width: 200px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 1rem;
+      align-self: flex-start;
+    }
+    #sidenav ul { list-style: none; }
+    #sidenav li + li { margin-top: 0.15rem; }
+    #sidenav a {
+      display: block;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+      border-left: 2px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #sidenav a:hover, #sidenav a.active { color: var(--gold); border-left-color: var(--gold); }
+    #sidenav .nav-section {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      padding: 0.6rem 0.6rem 0.25rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Main content ── */
+    #main { flex: 1; min-width: 0; }
+
+    /* ── Sections ── */
+    .guide-section {
+      margin-bottom: 2.5rem;
+      scroll-margin-top: 1rem;
+    }
+    .guide-section h2 {
+      font-size: 1.15rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .guide-section h3 {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin: 1.2rem 0 0.5rem;
+      letter-spacing: 0.03em;
+    }
+    .guide-section p { margin-bottom: 0.75rem; color: var(--text); }
+    .guide-section p:last-child { margin-bottom: 0; }
+
+    /* ── Step cards ── */
+    .step-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.75rem; }
+    .step-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold-dim);
+      border-radius: 2px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      color: var(--gold);
+      font-size: 1.1rem;
+      font-weight: bold;
+      flex-shrink: 0;
+      min-width: 1.6rem;
+      text-align: right;
+    }
+    .step-body { flex: 1; }
+    .step-body strong { color: var(--text); }
+    .step-body p { margin-bottom: 0.3rem; font-size: 0.9rem; }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    /* ── Info / warning boxes ── */
+    .info-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 2px;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.88rem;
+    }
+    .info-box.warn { border-left-color: var(--gold-dim); }
+    .info-box.ok   { border-left-color: var(--green-dim); }
+    .info-box .box-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 0.35rem;
+    }
+    .info-box p { margin: 0; }
+
+    /* ── Concept cards ── */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .concept-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.8rem 1rem;
+    }
+    .concept-card .cc-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+    .concept-card .cc-title { color: var(--gold); font-size: 0.88rem; font-weight: bold; margin-bottom: 0.3rem; }
+    .concept-card .cc-body { font-size: 0.82rem; color: var(--text-dim); }
+
+    /* ── Item unlock list ── */
+    .unlock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .unlock-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .unlock-item::before { content: "◆"; font-size: 0.5rem; color: var(--gold-dim); flex-shrink: 0; }
+    .unlock-item.gem::before    { color: var(--green); }
+    .unlock-item.support::before{ color: var(--purple); }
+    .unlock-item.util::before   { color: var(--blue); }
+    .unlock-item.flask::before  { color: #e8c860; }
+
+    /* ── Code / commands ── */
+    .cmd-block {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.82rem;
+      margin: 0.75rem 0;
+      overflow-x: auto;
+    }
+    .cmd-block .cmd-line { display: flex; gap: 1.5rem; margin-bottom: 0.2rem; }
+    .cmd-block .cmd-line:last-child { margin-bottom: 0; }
+    .cmd-code { color: var(--teal); white-space: nowrap; }
+    .cmd-desc { color: var(--text-dim); }
+    code {
+      font-family: monospace;
+      background: var(--bg3);
+      color: var(--teal);
+      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+      font-size: 0.88em;
+    }
+    a { color: var(--gold); }
+    a:hover { color: #e8c880; }
+
+    /* ── Tips list ── */
+    .tips-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+    .tips-list li {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.88rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+    .tips-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0.65rem;
+      color: var(--gold-dim);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      #page { flex-direction: column; padding: 1rem; }
+      #sidenav { width: 100%; position: static; }
+      #sidenav ul { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+      #sidenav a { border-left: none; border-bottom: 2px solid var(--border); padding: 0.2rem 0.5rem; }
+      #sidenav .nav-section { display: none; }
+      #hero h2 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div id="header">
+  <img id="header-logo" src="images/poeAP.png" alt="PoE Archipelago">
+  <div id="header-titles">
+    <h1>Path of Exile · Archipelago</h1>
+    <p>Randomizer Setup &amp; Guide</p>
+  </div>
+  <nav id="header-nav" style="display:flex;gap:0.5rem">
+    <a href="index.html">Tracker</a>
+    <a href="https://github.com/stubobis1/Archipelago/releases" target="_blank">Download</a>
+  </nav>
+</div>
+
+<!-- ── Hero ── -->
+<div id="hero">
+  <h2>Still Sane, Exile?</h2>
+  <p>
+    Randomize Path of Exile into a fresh, unpredictable adventure — solo or alongside friends
+    playing completely different games. Unlock your skills, gear, and abilities as you earn them.
+  </p>
+  <div class="hero-badge-row">
+    <div class="hero-badge"><span>Solo</span> or Multiplayer</div>
+    <div class="hero-badge"><span>Highly</span> Configurable</div>
+    <div class="hero-badge"><span>TOS</span> Compliant</div>
+    <div class="hero-badge"><span>Free</span> &amp; Open Source</div>
+  </div>
+  <a class="btn-primary" href="#what-is-archipelago">Get Started ↓</a>
+</div>
+
+<!-- ── Main layout ── -->
+<div id="page">
+
+  <!-- Sidebar -->
+  <nav id="sidenav">
+    <div class="nav-section">Overview</div>
+    <ul>
+      <li><a href="#what-is-archipelago">What is Archipelago?</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#what-you-unlock">What You Unlock</a></li>
+    </ul>
+    <div class="nav-section">Setup</div>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#install-archipelago">1 · Install Archipelago</a></li>
+      <li><a href="#add-apworld">2 · Add .apworld</a></li>
+      <li><a href="#generate">3 · Generate / Join</a></li>
+      <li><a href="#poptracker">4 · PopTracker</a></li>
+      <li><a href="#start-client">5 · Start Client</a></li>
+    </ul>
+    <div class="nav-section">Reference</div>
+    <ul>
+      <li><a href="#commands">In-Game Commands</a></li>
+      <li><a href="#tips">Tips &amp; Troubleshooting</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main -->
+  <main id="main">
+
+    <!-- ── What is Archipelago ── -->
+    <section class="guide-section" id="what-is-archipelago">
+      <h2>What is Archipelago?</h2>
+      <p>
+        <a href="https://archipelago.gg" target="_blank">Archipelago</a> is a free, open-source multiworld randomizer.
+        It shuffles the <em>items</em> of one game into the world of another — so when you beat a boss in Path of Exile,
+        you might unlock a power-up for your friend playing Super Mario 64, and vice versa.
+      </p>
+      <p>
+        You can also play completely solo: your Path of Exile progression gets shuffled with itself, so you
+        earn your skills, gems, and gear slots as rewards instead of starting with them.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-icon">🌍</div>
+          <div class="cc-title">Multiworld</div>
+          <div class="cc-body">Multiple players in multiple games, all sharing one item pool. Help each other progress.</div>
+        </div>
+        <div class="concept-card">
+          <div class="cc-icon">🎯</div>
+          <div class="cc-title">Checks</div>
+          <div class="cc-body">When you find a qualifying item or level up, you "check" a location and send an item to someone.</div>
+        </div>
+        <div class="concept-card">
+          <div class="cc-icon">🔓</div>
+          <div class="cc-title">Unlocks</div>
+          <div class="cc-body">Items you <em>receive</em> from others (or yourself) let you equip new gear, use new gems, and more.</div>
+        </div>
+        <div class="concept-card">
+          <div class="cc-icon">⚔️</div>
+          <div class="cc-title">Goals</div>
+          <div class="cc-body">Your run ends when you hit your goal — finish the campaign, kill specific bosses, or anything in between.</div>
+        </div>
+      </div>
+
+      <div class="info-box ok" style="margin-top:1rem">
+        <div class="box-title">Is this against Path of Exile's ToS?</div>
+        <p>No. The client only reads your <code>Client.txt</code> log file and the public PoE API, then writes to your
+        local item filter. It uses one-button-one-action macros and nothing else. Everything it does is something
+        a regular player could feasibly do manually.</p>
+      </div>
+    </section>
+
+    <!-- ── How It Works ── -->
+    <section class="guide-section" id="how-it-works">
+      <h2>How It Works in PoE</h2>
+      <p>The Archipelago client runs alongside Path of Exile. It never touches the game's files directly — it watches
+      what you do and reacts:</p>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p><strong>You pick up an item or level up.</strong></p>
+            <p>The client watches your inventory when you change zones. Qualifying items (specific base types)
+            count as "checks" and send items to other players.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p><strong>Your item filter highlights what matters.</strong></p>
+            <p>The client modifies your local loot filter to highlight items that would send a check,
+            and stops highlighting items you've already checked. Optional audio cues announce incoming unlocks.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p><strong>You receive unlocks from the multiworld.</strong></p>
+            <p>When you (or a teammate) checks a location, you might receive a skill gem, a gear slot upgrade,
+            passive points, or a new character class. The client tells you what arrived.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <p><strong>You can only use what you've unlocked.</strong></p>
+            <p>Equipping something you haven't unlocked puts you "out of logic" and blocks further check
+            sends until you correct it. Whisper yourself <code>!gear</code> or <code>!gems</code> to see
+            what's allowed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box warn" style="margin-top:1rem">
+        <div class="box-title">Important</div>
+        <p>Checks are only sent when you <strong>change zones</strong>. If you pick something up and nothing
+        happens right away, don't panic — just walk through a waypoint or door.</p>
+      </div>
+    </section>
+
+    <!-- ── What You Unlock ── -->
+    <section class="guide-section" id="what-you-unlock">
+      <h2>What Gets Shuffled?</h2>
+
+      <h3>Locations (things you do to send checks)</h3>
+      <div class="unlock-grid">
+        <div class="unlock-item">Pick up specific item bases</div>
+        <div class="unlock-item">Level up (optional)</div>
+      </div>
+
+      <h3 style="margin-top:1.2rem">Items (things you can receive as unlocks)</h3>
+      <div class="unlock-grid">
+        <div class="unlock-item">Character classes</div>
+        <div class="unlock-item">Ascendancy classes</div>
+        <div class="unlock-item flask">Passive skill points</div>
+        <div class="unlock-item">Gear rarity (Normal→Unique)</div>
+        <div class="unlock-item flask">Flask slots (up to 5)</div>
+        <div class="unlock-item">Linked socket count</div>
+        <div class="unlock-item gem">Skill gems</div>
+        <div class="unlock-item support">Support gems</div>
+        <div class="unlock-item util">Utility gems (auras, curses…)</div>
+      </div>
+
+      <div class="info-box" style="margin-top:1rem">
+        <div class="box-title">New to Path of Exile?</div>
+        <p>In a normal PoE run you pick up any gem and equip any item you find. Here, you start with almost
+        nothing — you'll earn the right to use gems, wear better gear, and spend passive points as
+        rewards for exploring the world. Think of it like starting a run with a locked skill tree that
+        you gradually unlock by playing.</p>
+      </div>
+    </section>
+
+    <!-- ── Prerequisites ── -->
+    <section class="guide-section" id="prerequisites">
+      <h2>Before You Begin</h2>
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">✓</div>
+          <div class="step-body">
+            <p><strong>Path of Exile</strong> — installed and playable.
+            <a href="https://www.pathofexile.com" target="_blank">Free download here.</a></p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">✓</div>
+          <div class="step-body">
+            <p><strong>Python 3.12</strong> — required by Archipelago.
+            <a href="https://www.python.org/downloads/release/python-31210/" target="_blank">Download Python 3.12.</a></p>
+            <p style="color:var(--red);font-size:0.82rem">Python 3.13 will NOT work. Use 3.12 specifically.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">✓</div>
+          <div class="step-body">
+            <p>Know the path to your PoE <strong>Client.txt</strong> log file — usually somewhere like
+            <code>C:\Program Files (x86)\Grinding Gear Games\Path of Exile\logs\Client.txt</code></p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">✓</div>
+          <div class="step-body">
+            <p>Have a local <strong>item filter</strong> file saved on your PC — not a subscribed one.
+            Usually in <code>C:\Users\YOU\Documents\My Games\Path of Exile\</code>.
+            Any NeverSink variant works fine as a base.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Install Archipelago ── -->
+    <section class="guide-section" id="install-archipelago">
+      <h2>Step 1 · Install Archipelago</h2>
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>Download the latest Archipelago installer from
+            <a href="https://github.com/ArchipelagoMW/Archipelago/releases" target="_blank">github.com/ArchipelagoMW/Archipelago/releases</a>.</p>
+            <p>Get the <code>.exe</code> installer, not the source code archives.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>Run the installer and choose a convenient folder (e.g. <code>C:\Games\Archipelago</code>).</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p>Launch <code>ArchipelagoLauncher.exe</code> from that folder to confirm it works.
+            Consider making a desktop shortcut — you'll use this often.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Add apworld ── -->
+    <section class="guide-section" id="add-apworld">
+      <h2>Step 2 · Add the Path of Exile .apworld</h2>
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>Download the latest <code>poe.apworld</code> file from
+            <a href="https://github.com/stubobis1/Archipelago/releases" target="_blank">github.com/stubobis1/Archipelago/releases</a>.</p>
+            <p>Again, grab the <code>.apworld</code> file — not the source code.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>Copy that file into the <code>custom_worlds</code> folder inside your Archipelago installation.
+            Do not extract or rename it — just drop the file in.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Generate ── -->
+    <section class="guide-section" id="generate">
+      <h2>Step 3 · Generate or Join a Game</h2>
+      <p>You need a <code>.yaml</code> settings file that tells Archipelago what kind of run you want.</p>
+
+      <h3>Creating your settings file</h3>
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>In <code>ArchipelagoLauncher.exe</code>, click <strong>Generate Template Options</strong> (near the bottom of the list).</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>Open <code>Archipelago/Players/Templates/Path of Exile.yaml</code> in any text editor.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p>Edit to taste. Key settings:</p>
+            <ul style="margin-top:0.4rem;padding-left:1.2rem;font-size:0.88rem;color:var(--text-dim);display:flex;flex-direction:column;gap:0.3rem">
+              <li><code>name</code> — your player slot name (e.g. <code>ChrisWilsonsBeard</code>)</li>
+              <li><code>goal</code> — what ends your run (campaign, bosses, etc.)</li>
+              <li><code>starting_character</code> — which class you begin with (or <code>random</code>)</li>
+              <li><code>usable_starting_gear</code> — how much starter gear you keep</li>
+              <li><code>add_passive_skill_points_to_item_pool</code> — locks and unlocks passive points</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <p>Save your <code>.yaml</code> to the <code>Archipelago/Players/</code> folder (not Templates).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="box-title">Tip — Easy Options Editor</div>
+        <p>You can also build your yaml visually at
+        <a href="https://ap.stripesoo7.org/games/Path%20of%20Exile/player-options" target="_blank">ap.stripesoo7.org</a>
+        or
+        <a href="https://multiworld.gg/games/Path%20of%20Exile/player-options" target="_blank">multiworld.gg</a>.</p>
+      </div>
+
+      <h3>If you are hosting (solo or with friends)</h3>
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>Make sure all players' <code>.yaml</code> files are in the <code>Players/</code> folder.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>Click <strong>Generate</strong> in the Launcher. This creates an archive in the <code>output/</code> folder.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p>Click <strong>Host</strong> in the Launcher and select that archive. The server runs on port <code>38281</code> by default.
+            Share your IP and port with teammates.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>If someone else is hosting</h3>
+      <p>Send the host your <code>.yaml</code> file and make sure they have the same <code>poe.apworld</code> version.
+      Get the server address and your slot name from them.</p>
+    </section>
+
+    <!-- ── PopTracker ── -->
+    <section class="guide-section" id="poptracker">
+      <h2>Step 4 · PopTracker <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional but Recommended)</span></h2>
+      <p>PopTracker gives you a visual dashboard of what gems, gear slots, and ascendancies you've unlocked.</p>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>Download PopTracker from
+            <a href="https://github.com/black-sliver/PopTracker/releases" target="_blank">github.com/black-sliver/PopTracker/releases</a>
+            and extract it anywhere.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>Download the PoE pack (a <code>.zip</code> archive) from
+            <a href="https://github.com/stubobis1/PathOfExilePoptracker/releases" target="_blank">github.com/stubobis1/PathOfExilePoptracker/releases</a>.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p>Drop that zip (without extracting it) into <code>poptracker/packs/</code>.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <p>Launch <code>PopTracker.exe</code>, click the <strong>AP</strong> button at the top, and enter your
+            server address and slot name. The button turns green when connected.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Start Client ── -->
+    <section class="guide-section" id="start-client">
+      <h2>Step 5 · Start the Client &amp; Play</h2>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>In <code>ArchipelagoLauncher.exe</code>, find and click <strong>Path of Exile</strong> in the client list to open the PoE client window.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>In the <strong>Server</strong> bar at the top, enter your address and click <strong>Connect</strong>.
+            Format: <code>127.0.0.1:38281</code> for local, or whatever the host gave you.</p>
+            <p>When prompted, enter your slot name. If a password is set, use <code>SlotName:password@host:port</code>.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p>Authenticate your PoE account by running <code>/poe_auth</code> in the client console. A browser window
+            will open — click Authorize. This only shares your public profile data.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <p>Launch Path of Exile and log in. Note your character's exact name.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <p>Back in the client, set your character: <code>/char YourCharacterName</code></p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <p>Set your log path: <code>/client "C:\...\logs\Client.txt"</code> (include the quotes)</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <p>Set your item filter: <code>/filter MyFilter.filter</code><br>
+            This should be a local filter file in your Path of Exile documents folder.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">8</div>
+          <div class="step-body">
+            <p>Type <code>/start</code> and enter the game. The item filter will load and you'll see highlighted items immediately.</p>
+            <p>Enter a zone to trigger your first check. Welcome to the randomizer!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Commands ── -->
+    <section class="guide-section" id="commands">
+      <h2>In-Game Chat Commands</h2>
+      <p>Whisper these commands <strong>to your own character</strong> in PoE chat.
+      For example: <code>@YourCharName !gems</code></p>
+
+      <div class="cmd-block">
+        <div class="cmd-line"><span class="cmd-code">!gems</span><span class="cmd-desc">Show all gems received</span></div>
+        <div class="cmd-line"><span class="cmd-code">!skill gems</span><span class="cmd-desc">List usable skill gems by level</span></div>
+        <div class="cmd-line"><span class="cmd-code">!support gems</span><span class="cmd-desc">List support gems received</span></div>
+        <div class="cmd-line"><span class="cmd-code">!utility gems</span><span class="cmd-desc">List utility gems (auras, curses…)</span></div>
+        <div class="cmd-line"><span class="cmd-code">!gear</span><span class="cmd-desc">Show what gear you can equip</span></div>
+        <div class="cmd-line"><span class="cmd-code">!weapons</span><span class="cmd-desc">Show usable weapons</span></div>
+        <div class="cmd-line"><span class="cmd-code">!armor</span><span class="cmd-desc">Show usable armour</span></div>
+        <div class="cmd-line"><span class="cmd-code">!links</span><span class="cmd-desc">Show your maximum allowed linked sockets</span></div>
+        <div class="cmd-line"><span class="cmd-code">!flasks</span><span class="cmd-desc">Show flask slot unlocks</span></div>
+        <div class="cmd-line"><span class="cmd-code">!passive</span><span class="cmd-desc">List usable passive skill points</span></div>
+        <div class="cmd-line"><span class="cmd-code">!ascendancy</span><span class="cmd-desc">Show unlocked ascendancies</span></div>
+        <div class="cmd-line"><span class="cmd-code">!goal</span><span class="cmd-desc">View your current run goal</span></div>
+        <div class="cmd-line"><span class="cmd-code">!deathlink</span><span class="cmd-desc">Toggle DeathLink (share deaths with others)</span></div>
+        <div class="cmd-line"><span class="cmd-code">!help</span><span class="cmd-desc">Show all commands</span></div>
+      </div>
+
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-dim)">
+        Client console commands (typed in the Archipelago client, not in PoE):
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-line"><span class="cmd-code">/received</span><span class="cmd-desc">List all items you've received</span></div>
+        <div class="cmd-line"><span class="cmd-code">/poe_auth</span><span class="cmd-desc">Authenticate with PoE (run once)</span></div>
+        <div class="cmd-line"><span class="cmd-code">/char Name</span><span class="cmd-desc">Set the character to track</span></div>
+        <div class="cmd-line"><span class="cmd-code">/client "path"</span><span class="cmd-desc">Set Client.txt path (quotes required)</span></div>
+        <div class="cmd-line"><span class="cmd-code">/filter name.filter</span><span class="cmd-desc">Set your local item filter</span></div>
+        <div class="cmd-line"><span class="cmd-code">/start</span><span class="cmd-desc">Start the randomizer session</span></div>
+        <div class="cmd-line"><span class="cmd-code">/deathlink</span><span class="cmd-desc">Toggle DeathLink</span></div>
+      </div>
+
+      <div class="info-box" style="margin-top:0.5rem">
+        <div class="box-title">Keyboard Shortcuts</div>
+        <p><strong>F11</strong> — restart the client if something goes wrong.<br>
+        <strong>F12</strong> — force the client to re-check your current state (useful if a check didn't send).</p>
+      </div>
+    </section>
+
+    <!-- ── Tips ── -->
+    <section class="guide-section" id="tips">
+      <h2>Tips &amp; Troubleshooting</h2>
+
+      <ul class="tips-list">
+        <li>Keep the Archipelago client open the entire time you play. It shows item sends, receives, and player names in real time.</li>
+        <li>Checks only fire on <strong>zone change</strong>. Nothing happening after a pickup is normal — just move to a new area.</li>
+        <li>If you're using a gem or gear piece you haven't unlocked, you're "out of logic" and checks won't send until you fix it. Whisper yourself <code>!gear</code> or <code>!gems</code> to verify what's allowed.</li>
+        <li>If your item filter isn't updating, check that the path is correct and that OneDrive sync isn't locking the file. Try disabling OneDrive if you see write errors.</li>
+        <li>Make sure the <code>/client</code> path points to the correct <code>Client.txt</code>. The client reads this file to detect zone changes and chat whispers.</li>
+        <li>Town Portals are your friend — drop items off at the stash to check them without needing to reach a full transition zone.</li>
+        <li>The early levels before your first few gems arrive can be rough. There's no shame in starting with your class weapon, starter gem, and flasks unlocked in your yaml settings.</li>
+        <li>Many "bad" endgame skills are perfectly fine for clearing the campaign. Use whatever you've been given!</li>
+        <li>F12 forces a re-check if you think something got missed — helpful when <code>Client.txt</code> is temporarily unreadable.</li>
+        <li>Report bugs in the
+          <a href="https://github.com/stubobis1/Archipelago/issues" target="_blank">GitHub issue tracker</a>
+          or ask in the Path of Exile Archipelago Discord channel.</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Highlight active sidenav link on scroll
+  const sections = document.querySelectorAll('.guide-section');
+  const navLinks = document.querySelectorAll('#sidenav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`#sidenav a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
