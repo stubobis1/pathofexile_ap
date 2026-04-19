@@ -128,6 +128,7 @@
 
 <script type="module">
 import { Client } from 'https://cdn.jsdelivr.net/npm/archipelago.js@2.1.0/dist/index.js';
+import { initGemTooltips, preloadGems } from './gem-tooltip.js';
 
 // Data fetched from GitHub at load time
 let POE_LOCATIONS = {}, POE_ITEMS = {}, GEM_LEVEL_REQ = {};
@@ -203,7 +204,7 @@ window.toggleActSection = function toggleActSection(header) {
 const IMG_BASE = 'images/';
 
 function itemImageUrl(name) {
-  const key = name.toLowerCase().replace(/\s+/g, '');
+  const key = name.toLowerCase().replace(/['\s]/g, '');
   return `${IMG_BASE}${key}.png`;
 }
 
@@ -465,9 +466,9 @@ function renderEquipment(receivedItems) {
     const magicProg   = counts['Progressive Magic Flask Unlock']  || 0;
     const uniqueProg  = counts['Progressive Unique Flask Unlock'] || 0;
     return [
-      !!(prog >= slotNum        || normProg  >= slotNum),
-      !!(prog >= slotNum + 5    || magicProg >= slotNum),
-      !!(prog >= slotNum + 10   || uniqueProg >= slotNum),
+      prog >= slotNum        || normProg  >= slotNum,
+      prog >= slotNum + 5    || magicProg >= slotNum,
+      prog >= slotNum + 10   || uniqueProg >= slotNum,
     ];
   }
 
@@ -596,10 +597,9 @@ function renderItems(receivedItems) {
   html += `</div>`;
 
   // ── Gem & other categories ───────────────────────────────────────────────
-  const catsPresent = CAT_ORDER.filter(c => grouped[c]);
-  for (const cat of catsPresent) {
+  for (const cat of CAT_ORDER) {
     const isGem = GEM_CATS.has(cat);
-    const entries = Object.entries(grouped[cat]);
+    const entries = Object.entries(grouped[cat] ?? {});
 
     if (isGem && gemSort === 'level') {
       entries.sort((a, b) => {
@@ -616,13 +616,14 @@ function renderItems(receivedItems) {
       <div class="cat-header" onclick="toggleItemSection(this)">
         <span class="collapse-icon">▾</span>
         <h3>${cat}</h3>
-        <span class="cat-count">${entries.length} types · ${entries.reduce((s,[,c])=>s+c,0)} total</span>
+        <span class="cat-count">${isGem ? entries.reduce((s,[,c])=>s+c,0) : `${entries.length} types · ${entries.reduce((s,[,c])=>s+c,0)} total`}</span>
       </div>
       <div class="cat-body">`;
     for (const [name, count] of entries) {
       const lvl    = isGem && gemSort === 'level' ? (GEM_LEVEL_REQ[name] != null ? `<span class="item-level">L${GEM_LEVEL_REQ[name]}</span>` : '') : '';
       const imgSrc = itemImageUrl(name);
-      html += `<span class="item-tag ${cls}"><img class="item-img" src="${imgSrc}" alt="" onerror="this.style.display='none'">${name}${lvl}${count > 1 ? `<span class="item-count">×${count}</span>` : ''}</span>`;
+      const gemAttr = isGem ? ` data-gem="${name}"` : '';
+      html += `<span class="item-tag ${cls}"${gemAttr}><img class="item-img" src="${imgSrc}" alt="" onerror="this.style.display='none'">${name}${lvl}${count > 1 ? `<span class="item-count">×${count}</span>` : ''}</span>`;
     }
     html += `</div></div>`;
   }
@@ -791,6 +792,10 @@ async function connect() {
 
     // ── events ──────────────────────────────────────────────────────────
     client.items.on('itemsReceived', (items) => {
+      const newGems = items
+        .filter(it => GEM_CATEGORIES.has(POE_ITEMS[it.name]))
+        .map(it => it.name);
+      if (newGems.length) preloadGems(newGems);
       refresh();
       for (const it of items) {
         addMessage(`Received: ${it.name}${it.locationName ? ` from ${it.locationName}` : ''}`, 'msg-item');
@@ -856,7 +861,15 @@ btnConnect.addEventListener('click', () => {
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-loadGameData().then(() => renderLocations()); // show full static location list before any connection
+const GEM_CATEGORIES = new Set(['Skill Gems', 'Support Gems', 'Utility Gems']);
+loadGameData().then(() => {
+  renderLocations();
+  const allGemNames = Object.entries(POE_ITEMS)
+    .filter(([, cat]) => GEM_CATEGORIES.has(cat))
+    .map(([name]) => name);
+  preloadGems(allGemNames);
+});
+initGemTooltips();
 </script>
 
 </body>

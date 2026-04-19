@@ -507,9 +507,9 @@
         <div class="unlock-item">Gear rarity (Normal→Unique)</div>
         <div class="unlock-item flask">Flask slots (up to 5)</div>
         <div class="unlock-item">Linked socket count</div>
-        <div class="unlock-item gem">Skill gems</div>
-        <div class="unlock-item support">Support gems</div>
-        <div class="unlock-item util">Utility gems (auras, curses…)</div>
+        <div class="unlock-item gem" data-gem="Arc">Skill gems <small style="color:var(--text-dim)">(hover for example)</small></div>
+        <div class="unlock-item support" data-gem="Added Cold Damage Support">Support gems</div>
+        <div class="unlock-item util" data-gem="Anger">Utility gems (auras, curses…)</div>
       </div>
 
       <div class="info-box" style="margin-top:1rem">
@@ -862,6 +862,11 @@
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
   sections.forEach(s => observer.observe(s));
+</script>
+
+<script type="module">
+  import { initGemTooltips } from './gem-tooltip.js';
+  initGemTooltips();
 </script>
 
 </body>
