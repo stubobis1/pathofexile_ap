@@ -4,7 +4,11 @@
 // Caches data in localStorage with a 2-week TTL.
 
 const WIKI_API    = 'https://www.poewiki.net/api.php';
-const CORS_PROXY  = 'https://corsproxy.io/?';
+const CORS_PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?',  // retry corsproxy on second pass
+];
 const BATCH_SIZE  = 10;
 const BATCH_DELAY = 600; // ms between batches to avoid proxy rate-limiting
 const HEADER_IMG = 'https://www.poewiki.net/w/images/9/9b/Item-ui-header-single.png';
@@ -191,12 +195,22 @@ function createTip() {
 }
 
 // ── Wiki data fetching ────────────────────────────────────────────────────────
+async function proxiedFetch(wikiUrl) {
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const r = await fetch(proxy + encodeURIComponent(wikiUrl));
+      if (r.ok) return r;
+    } catch {}
+  }
+  throw new Error('All proxies failed');
+}
+
 async function fetchWikitext(title) {
   const params = new URLSearchParams({
     action: 'query', prop: 'revisions', titles: title,
-    rvslots: 'main', rvprop: 'content', format: 'json',
+    rvslots: 'main', rvprop: 'content', format: 'json', redirects: '1',
   });
-  const r = await fetch(CORS_PROXY + encodeURIComponent(`${WIKI_API}?${params}`));
+  const r = await proxiedFetch(`${WIKI_API}?${params}`);
   const j = await r.json();
   const pages = j?.query?.pages;
   if (!pages) return null;
@@ -205,7 +219,7 @@ async function fetchWikitext(title) {
   return page?.revisions?.[0]?.slots?.main?.['*'] ?? null;
 }
 
-// Fetch up to 50 titles in one request; returns Map<title, wikitext>
+// Fetch up to BATCH_SIZE titles in one request; returns Map<title, wikitext>
 async function fetchWikitextBatch(titles) {
   const params = new URLSearchParams({
     action: 'query', prop: 'revisions',
@@ -213,7 +227,7 @@ async function fetchWikitextBatch(titles) {
     rvslots: 'main', rvprop: 'content', format: 'json',
     redirects: '1',
   });
-  const r = await fetch(CORS_PROXY + encodeURIComponent(`${WIKI_API}?${params}`));
+  const r = await proxiedFetch(`${WIKI_API}?${params}`);
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   const j = await r.json();
   const out = new Map();
