@@ -596,7 +596,7 @@
           <div class="step-body">
             <p><strong>Optional:</strong> Have a local <strong>item filter</strong> file saved on your PC — not a subscribed one.
             Usually in <code>C:\Users\YOU\Documents\My Games\Path of Exile\</code>.
-            Any NeverSink variant works fine as a base. If you skip this, the client won't highlight relevant items in-game,
+            Any NeverSink variant works fine as a base. If you skip this, the client won't apply your normal gameplay filter,
             but everything else still works.</p>
           </div>
         </div>
@@ -646,8 +646,9 @@
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-body">
-            <p>Copy that file into the <code>custom_worlds</code> folder inside your Archipelago installation.
-            Do not extract or rename it — just drop the file in.</p>
+            <p>Copy that file into the <code>custom_worlds</code> folder inside your Archipelago installation.</p> 
+            <p>(e.g. <code>C:\Games\Archipelago\custom_worlds\poe.apworld</code>)</p>
+            <p>Do not extract or rename it — just drop the file in.</p>
           </div>
         </div>
       </div>
@@ -658,7 +659,32 @@
       <h2>Step 3 · Generate or Join a Game</h2>
       <p>You need a <code>.yaml</code> settings file that tells Archipelago what kind of run you want.</p>
 
-      <h3>Creating your settings file</h3>
+      <h3>Creating your settings file — recommended</h3>
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>Open the visual options editor at
+            <a href="https://ap.stripesoo7.org/games/Path%20of%20Exile/player-options" target="_blank">ap.stripesoo7.org</a>
+            or <a href="https://multiworld.gg/games/Path%20of%20Exile/player-options" target="_blank">multiworld.gg</a>.
+            No installation required — everything is point-and-click.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>Set your slot name, goal, starting class, and any other options you want to tweak.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <p>Download the generated <code>.yaml</code> and place it in your <code>Archipelago/Players/</code> folder.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Creating your settings file — manual</h3>
       <div class="step-list">
         <div class="step-card">
           <div class="step-num">1</div>
@@ -688,17 +714,9 @@
         <div class="step-card">
           <div class="step-num">4</div>
           <div class="step-body">
-            <p>Save your <code>.yaml</code> to the <code>Archipelago/Players/</code> folder (not Templates).</p>
+            <p>Save your edited file to <code>Archipelago/Players/</code> (not the Templates subfolder).</p>
           </div>
         </div>
-      </div>
-
-      <div class="info-box">
-        <div class="box-title">Tip — Easy Options Editor</div>
-        <p>You can also build your yaml visually at
-        <a href="https://ap.stripesoo7.org/games/Path%20of%20Exile/player-options" target="_blank">ap.stripesoo7.org</a>
-        or
-        <a href="https://multiworld.gg/games/Path%20of%20Exile/player-options" target="_blank">multiworld.gg</a>.</p>
       </div>
 
       <h3>If you are hosting (solo or with friends)</h3>
