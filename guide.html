@@ -376,6 +376,7 @@
       <li><a href="#what-is-archipelago">What is Archipelago?</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#what-you-unlock">What You Unlock</a></li>
+      <li><a href="#configurable">Configurable</a></li>
     </ul>
     <div class="nav-section">Setup</div>
     <ul>
@@ -383,11 +384,12 @@
       <li><a href="#install-archipelago">1 · Install Archipelago</a></li>
       <li><a href="#add-apworld">2 · Add .apworld</a></li>
       <li><a href="#generate">3 · Generate / Join</a></li>
-      <li><a href="#poptracker">4 · PopTracker</a></li>
+      <li><a href="#poptracker">4 · Web Tracker</a></li>
       <li><a href="#start-client">5 · Start Client</a></li>
     </ul>
     <div class="nav-section">Reference</div>
     <ul>
+      <li><a href="#deathlink">DeathLink</a></li>
       <li><a href="#commands">In-Game Commands</a></li>
       <li><a href="#tips">Tips &amp; Troubleshooting</a></li>
     </ul>
@@ -425,11 +427,6 @@
           <div class="cc-title">Unlocks</div>
           <div class="cc-body">Items you <em>receive</em> from others (or yourself) let you equip new gear, use new gems, and more.</div>
         </div>
-        <div class="concept-card">
-          <div class="cc-icon">⚔️</div>
-          <div class="cc-title">Goals</div>
-          <div class="cc-body">Your run ends when you hit your goal — finish the campaign, kill specific bosses, or anything in between.</div>
-        </div>
       </div>
 
       <div class="info-box ok" style="margin-top:1rem">
@@ -440,6 +437,7 @@
       </div>
     </section>
 
+
     <!-- ── How It Works ── -->
     <section class="guide-section" id="how-it-works">
       <h2>How It Works in PoE</h2>
@@ -447,22 +445,23 @@
       what you do and reacts:</p>
 
       <div class="step-list">
-        <div class="step-card">
+          <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <p><strong>You pick up an item or level up.</strong></p>
-            <p>The client watches your inventory when you change zones. Qualifying items (specific base types)
-            count as "checks" and send items to other players.</p>
+            <p><strong>Your item filter highlights what matters.</strong></p>
+            <p>The client modifies your local loot filter to highlight items that would send a check,
+            and stops highlighting items you've already checked. Optional audio cues announce incoming unlocks — and their magnitude too, so you know at a glance whether something important just arrived.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-body">
-            <p><strong>Your item filter highlights what matters.</strong></p>
-            <p>The client modifies your local loot filter to highlight items that would send a check,
-            and stops highlighting items you've already checked. Optional audio cues announce incoming unlocks.</p>
+            <p><strong>You pick up an item or level up.</strong></p>
+            <p>The client watches your inventory, through GGG's API, when you change zones. Qualifying items (specific base types)
+            count as "checks" and send items to other players.</p>
           </div>
         </div>
+
         <div class="step-card">
           <div class="step-num">3</div>
           <div class="step-body">
@@ -509,7 +508,6 @@
         <div class="unlock-item">Linked socket count</div>
         <div class="unlock-item gem" data-gem="Arc">Skill gems <small style="color:var(--text-dim)">(hover for example)</small></div>
         <div class="unlock-item support" data-gem="Added Cold Damage Support">Support gems</div>
-        <div class="unlock-item util" data-gem="Anger">Utility gems (auras, curses…)</div>
       </div>
 
       <div class="info-box" style="margin-top:1rem">
@@ -520,6 +518,52 @@
         you gradually unlock by playing.</p>
       </div>
     </section>
+
+    
+    <!-- ── Configurable ── -->
+    <section class="guide-section" id="configurable">
+      <h2>Highly Configurable</h2>
+      <p>
+        Almost every aspect of your run can be tuned in your <code>.yaml</code> settings file before generating. You don't
+        have to accept the defaults — tailor the experience to your group's preferred difficulty and play style.
+      </p>
+
+      <h3>How Much Setup Do You Want?</h3>
+      <p>
+        The mod is flexible about where you start. At one extreme you can drop straight into an existing
+        endgame character — just refund all your passive points with Orbs of Regret, unequip your gear, and
+        the client will treat you as starting from scratch. At the other extreme you can create a brand-new
+        character in an SSF league for a completely clean slate with no shared stash or trade to fall back on.
+        Everything in between works too.
+      </p>
+
+      <h3>Goal</h3>
+      <p>Choose what ends your run. Options range from simply completing the campaign to killing specific pinnacle bosses
+      like Shaper, Elder, or Maven. You can also set a custom kill count or boss checklist.</p>
+
+      <h3>Starting Conditions</h3>
+      <p>Control how much you begin with. <code>starting_character</code> sets your class (or leaves it random).
+      <code>usable_starting_gear</code> lets you keep your starting weapon and flasks so the very early game isn't completely blind.</p>
+
+      <h3>Item Pool</h3>
+      <p>Toggle whether passive skill points, level milestones, and specific gem categories are included in the shuffle.
+      A larger pool means more checks to send and receive — the run itself isn't necessarily longer, but there's more
+      going on and more items flowing between players. A smaller pool is tighter and more focused.</p>
+
+      <h3>Progression Balancing</h3>
+      <p>Archipelago can weight the item pool so that key unlocks — like your needed skill gems, gear unlocks, or ascendancies —
+      tend to arrive early rather than being buried in late checks. Adjust the <code>progression_balancing</code>
+      slider in your <code>.yaml</code> to control how aggressively it front-loads important items.</p>
+
+      <div class="info-box" style="margin-top:1rem">
+        <div class="box-title">Easy Options Editor</div>
+        <p>You can configure everything visually (no YAML editing required) at
+        <a href="https://ap.stripesoo7.org/games/Path%20of%20Exile/player-options" target="_blank">ap.stripesoo7.org</a>
+        or <a href="https://multiworld.gg/games/Path%20of%20Exile/player-options" target="_blank">multiworld.gg</a>.
+        Generate the file there and drop it straight into your <code>Players/</code> folder.</p>
+      </div>
+    </section>
+
 
     <!-- ── Prerequisites ── -->
     <section class="guide-section" id="prerequisites">
@@ -550,9 +594,10 @@
         <div class="step-card">
           <div class="step-num">✓</div>
           <div class="step-body">
-            <p>Have a local <strong>item filter</strong> file saved on your PC — not a subscribed one.
+            <p><strong>Optional:</strong> Have a local <strong>item filter</strong> file saved on your PC — not a subscribed one.
             Usually in <code>C:\Users\YOU\Documents\My Games\Path of Exile\</code>.
-            Any NeverSink variant works fine as a base.</p>
+            Any NeverSink variant works fine as a base. If you skip this, the client won't highlight relevant items in-game,
+            but everything else still works.</p>
           </div>
         </div>
       </div>
@@ -675,6 +720,9 @@
           <div class="step-body">
             <p>Click <strong>Host</strong> in the Launcher and select that archive. The server runs on port <code>38281</code> by default.
             Share your IP and port with teammates.</p>
+            <p>Alternatively, upload the archive to <a href="https://archipelago.gg/" target="_blank">archipelago.gg</a> or
+            <a href="https://multiworld.gg/" target="_blank">multiworld.gg</a> to host online without port-forwarding —
+            just share the room link instead.</p>
           </div>
         </div>
       </div>
@@ -684,40 +732,35 @@
       Get the server address and your slot name from them.</p>
     </section>
 
-    <!-- ── PopTracker ── -->
+    <!-- ── Tracker ── -->
     <section class="guide-section" id="poptracker">
-      <h2>Step 4 · PopTracker <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional but Recommended)</span></h2>
-      <p>PopTracker gives you a visual dashboard of what gems, gear slots, and ascendancies you've unlocked.</p>
+      <h2>Step 4 · Open the Web Tracker <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional but Recommended)</span></h2>
+      <p>The web tracker gives you a live dashboard of your received gems, gear unlocks, equipment slots, locations, and hints — no install required.</p>
 
       <div class="step-list">
         <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <p>Download PopTracker from
-            <a href="https://github.com/black-sliver/PopTracker/releases" target="_blank">github.com/black-sliver/PopTracker/releases</a>
-            and extract it anywhere.</p>
+            <p>Open <a href="https://stubobis1.github.io/pathofexile_ap/" target="_blank">stubobis1.github.io/pathofexile_ap/</a> in any browser.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-body">
-            <p>Download the PoE pack (a <code>.zip</code> archive) from
-            <a href="https://github.com/stubobis1/PathOfExilePoptracker/releases" target="_blank">github.com/stubobis1/PathOfExilePoptracker/releases</a>.</p>
+            <p>Enter your server address and slot name in the connection panel at the top, then click <strong>Connect</strong>.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
           <div class="step-body">
-            <p>Drop that zip (without extracting it) into <code>poptracker/packs/</code>.</p>
+            <p>The tracker updates in real time as you receive items and check locations. Use the tabs to switch between Items, Locations, Equipment, and Hints.</p>
           </div>
         </div>
-        <div class="step-card">
-          <div class="step-num">4</div>
-          <div class="step-body">
-            <p>Launch <code>PopTracker.exe</code>, click the <strong>AP</strong> button at the top, and enter your
-            server address and slot name. The button turns green when connected.</p>
-          </div>
-        </div>
+      </div>
+
+      <div class="info-box ok" style="margin-top:1rem">
+        <div class="box-title">Hover for Gem Details</div>
+        <p>Hover over any gem in the Items tab to see a full tooltip — level requirements, stat text, and description — pulled live from the Path of Exile wiki.</p>
       </div>
     </section>
 
@@ -736,15 +779,9 @@
           <div class="step-num">2</div>
           <div class="step-body">
             <p>In the <strong>Server</strong> bar at the top, enter your address and click <strong>Connect</strong>.
-            Format: <code>127.0.0.1:38281</code> for local, or whatever the host gave you.</p>
+            
             <p>When prompted, enter your slot name. If a password is set, use <code>SlotName:password@host:port</code>.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <p>Authenticate your PoE account by running <code>/poe_auth</code> in the client console. A browser window
-            will open — click Authorize. This only shares your public profile data.</p>
+            <p>If hosting yourself, it will be <code>127.0.0.1:38281</code> for the host and port.</p>
           </div>
         </div>
         <div class="step-card">
@@ -756,13 +793,13 @@
         <div class="step-card">
           <div class="step-num">5</div>
           <div class="step-body">
-            <p>Back in the client, set your character: <code>/char YourCharacterName</code></p>
+            <p>Type <code>!apchar</code> in the in-game chat, or set your character in the client console: <code>/char YourCharacterName</code></p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">6</div>
           <div class="step-body">
-            <p>Set your log path: <code>/client "C:\...\logs\Client.txt"</code> (include the quotes)</p>
+            <p>The log path should be automatically set when loading, but if it isn't working, set your log path: <code>/client "C:\...\logs\Client.txt"</code> (include the quotes)</p>
           </div>
         </div>
         <div class="step-card">
@@ -778,6 +815,37 @@
             <p>Type <code>/start</code> and enter the game. The item filter will load and you'll see highlighted items immediately.</p>
             <p>Enter a zone to trigger your first check. Welcome to the randomizer!</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DeathLink ── -->
+    <section class="guide-section" id="deathlink">
+      <h2>DeathLink <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional)</span></h2>
+      <p>
+        DeathLink is an optional Archipelago feature that links deaths across the entire multiworld.
+        When you die in Path of Exile, a death signal is sent to every other DeathLink-enabled player — and when
+        anyone else dies, you receive one back.
+      </p>
+      <p>
+        In Path of Exile specifically, receiving a DeathLink signal <strong>does not kill your character</strong> — instead
+        the client logs you out to the character select screen. You re-enter the game at your last town or checkpoint,
+        avoiding any XP loss or Hardcore consequences from other players' deaths.
+      </p>
+      <p>
+        It's entirely opt-in per player. Enable it in your <code>.yaml</code> before the run starts, or toggle it
+        mid-run with <code>!deathlink</code> whispered to yourself in PoE.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="cc-icon">💀</div>
+          <div class="cc-title">Shared Deaths</div>
+          <div class="cc-body">When you die, all DeathLink-enabled players get booted to character select. A single wipe in the group ripples to everyone.</div>
+        </div>
+        <div class="concept-card">
+          <div class="cc-icon">⚡</div>
+          <div class="cc-title">Mid-Run Toggle</div>
+          <div class="cc-body">Whisper <code>!deathlink</code> to yourself or use <code>/deathlink</code> in the client console to flip it on or off without restarting.</div>
         </div>
       </div>
     </section>
