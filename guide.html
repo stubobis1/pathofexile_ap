@@ -141,6 +141,8 @@
     #page { flex: 1; display: flex; max-width: 1100px; width: 100%; margin: 0 auto; padding: 2rem; gap: 2rem; }
 
     /* ── Sidebar nav ── */
+    #nav-toggle { display: none; }
+    #nav-dropdown { display: block; }
     #sidenav {
       width: 200px;
       flex-shrink: 0;
@@ -326,12 +328,112 @@
 
     /* ── Responsive ── */
     @media (max-width: 700px) {
-      #page { flex-direction: column; padding: 1rem; }
-      #sidenav { width: 100%; position: static; }
-      #sidenav ul { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-      #sidenav a { border-left: none; border-bottom: 2px solid var(--border); padding: 0.2rem 0.5rem; }
-      #sidenav .nav-section { display: none; }
-      #hero h2 { font-size: 1.4rem; }
+      /* Header */
+      #header { padding: 0.6rem 1rem; gap: 0.6rem; }
+      #header h1 { font-size: 1rem; }
+      #header p { display: none; }
+      #header-logo { height: 32px; }
+      #header-nav a { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
+
+      /* Hero */
+      #hero { padding: 2rem 1rem 1.5rem; }
+      #hero h2 { font-size: 1.35rem; }
+      #hero p { font-size: 0.9rem; }
+      .hero-badge-row { gap: 0.4rem; }
+      .hero-badge { font-size: 0.72rem; padding: 0.2rem 0.6rem; }
+
+      /* Layout */
+      #page { flex-direction: column; padding: 1rem; gap: 0; }
+
+      /* Sidenav — sticky collapsible dropdown */
+      #sidenav {
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        margin: 0 -1rem;
+        width: calc(100% + 2rem);
+        padding: 0;
+      }
+      #sidenav::after { display: none; }
+      #nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0.6rem 1rem;
+        background: none;
+        border: none;
+        color: var(--gold);
+        font-family: 'Fontin SmallCaps', serif;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-align: left;
+      }
+      #nav-toggle-label { flex: 1; }
+      #nav-toggle-arrow {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        transition: transform 0.2s;
+      }
+      #sidenav.open #nav-toggle-arrow { transform: rotate(180deg); }
+      #nav-dropdown {
+        display: none;
+        padding: 0.25rem 0 0.5rem;
+        border-top: 1px solid var(--border);
+      }
+      #sidenav.open #nav-dropdown { display: block; }
+      #sidenav ul {
+        display: block;
+        padding: 0;
+      }
+      #sidenav li + li { margin-top: 0; }
+      #sidenav .nav-section {
+        font-size: 0.62rem;
+        padding: 0.4rem 1rem 0.15rem;
+        margin-top: 0.25rem;
+      }
+      #sidenav a {
+        border-left: none;
+        border: none;
+        border-radius: 0;
+        padding: 0.45rem 1.25rem;
+        white-space: normal;
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        display: block;
+      }
+      #sidenav a:hover  { color: var(--text); background: var(--bg3); }
+      #sidenav a.active { color: var(--gold); background: var(--bg3); }
+
+      #main { margin-top: 1rem; }
+
+      /* Sections */
+      .guide-section { margin-bottom: 1.75rem; }
+      .guide-section h2 { font-size: 1rem; }
+      .guide-section h3 { font-size: 0.88rem; }
+
+      /* Step cards */
+      .step-card { padding: 0.6rem 0.75rem; gap: 0.6rem; }
+      .step-num { font-size: 0.95rem; min-width: 1.2rem; }
+      .step-body p { font-size: 0.83rem; }
+
+      /* Grids — single column */
+      .concept-grid { grid-template-columns: 1fr; }
+      .unlock-grid  { grid-template-columns: 1fr 1fr; }
+
+      /* Code blocks */
+      .cmd-block { font-size: 0.75rem; padding: 0.6rem 0.75rem; }
+      .cmd-block .cmd-line { flex-direction: column; gap: 0.1rem; }
+      .cmd-desc { font-size: 0.72rem; }
+
+      /* Tips */
+      .tips-list li { font-size: 0.83rem; }
+
+      /* Info boxes */
+      .info-box { font-size: 0.83rem; padding: 0.6rem 0.75rem; }
     }
   </style>
 </head>
@@ -371,28 +473,34 @@
 
   <!-- Sidebar -->
   <nav id="sidenav">
-    <div class="nav-section">Overview</div>
-    <ul>
-      <li><a href="#what-is-archipelago">What is Archipelago?</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#what-you-unlock">What You Unlock</a></li>
-      <li><a href="#configurable">Configurable</a></li>
-    </ul>
-    <div class="nav-section">Setup</div>
-    <ul>
-      <li><a href="#prerequisites">Prerequisites</a></li>
-      <li><a href="#install-archipelago">1 · Install Archipelago</a></li>
-      <li><a href="#add-apworld">2 · Add .apworld</a></li>
-      <li><a href="#generate">3 · Generate / Join</a></li>
-      <li><a href="#poptracker">4 · Web Tracker</a></li>
-      <li><a href="#start-client">5 · Start Client</a></li>
-    </ul>
-    <div class="nav-section">Reference</div>
-    <ul>
-      <li><a href="#deathlink">DeathLink</a></li>
-      <li><a href="#commands">In-Game Commands</a></li>
-      <li><a href="#tips">Tips &amp; Troubleshooting</a></li>
-    </ul>
+    <button id="nav-toggle" aria-expanded="false" aria-controls="nav-dropdown">
+      <span id="nav-toggle-label">Navigation</span>
+      <span id="nav-toggle-arrow">▼</span>
+    </button>
+    <div id="nav-dropdown">
+      <div class="nav-section">Overview</div>
+      <ul>
+        <li><a href="#what-is-archipelago">What is Archipelago?</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#what-you-unlock">What You Unlock</a></li>
+        <li><a href="#configurable">Configurable</a></li>
+      </ul>
+      <div class="nav-section">Setup</div>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#install-archipelago">1 · Install Archipelago</a></li>
+        <li><a href="#add-apworld">2 · Add .apworld</a></li>
+        <li><a href="#generate">3 · Generate / Join</a></li>
+        <li><a href="#poptracker">4 · Web Tracker</a></li>
+        <li><a href="#start-client">5 · Start Client</a></li>
+      </ul>
+      <div class="nav-section">Reference</div>
+      <ul>
+        <li><a href="#deathlink">DeathLink</a></li>
+        <li><a href="#commands">In-Game Commands</a></li>
+        <li><a href="#tips">Tips &amp; Troubleshooting</a></li>
+      </ul>
+    </div>
   </nav>
 
   <!-- Main -->
@@ -938,16 +1046,41 @@
   // Highlight active sidenav link on scroll
   const sections = document.querySelectorAll('.guide-section');
   const navLinks = document.querySelectorAll('#sidenav a');
+  const toggleLabel = document.getElementById('nav-toggle-label');
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         navLinks.forEach(a => a.classList.remove('active'));
         const active = document.querySelector(`#sidenav a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active');
+        if (active) {
+          active.classList.add('active');
+          if (toggleLabel) toggleLabel.textContent = active.textContent;
+        }
       }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
   sections.forEach(s => observer.observe(s));
+
+  // Mobile dropdown toggle
+  const navToggle = document.getElementById('nav-toggle');
+  const navDropdown = document.getElementById('nav-dropdown');
+  const sidenav = document.getElementById('sidenav');
+
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const open = sidenav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+
+    // Close on link click
+    navDropdown.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        sidenav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 </script>
 
 <script type="module">
