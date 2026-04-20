@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Path of Exile — Player Options</title>
+  <link rel="icon" href="images/poeAP.png">
+  <style>
+    @font-face { font-family: 'Fontin'; src: url('fontin_pc/Fontin-Regular.otf') format('opentype'); }
+    @font-face { font-family: 'Fontin'; src: url('fontin_pc/Fontin-Bold.otf') format('opentype'); font-weight: bold; }
+    @font-face { font-family: 'Fontin SmallCaps'; src: url('fontin_pc/Fontin-SmallCaps.otf') format('opentype'); }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --bg2:      #141410;
+      --bg3:      #1c1c16;
+      --border:   #2e2e22;
+      --gold:     #c8a860;
+      --gold-dim: #7a6030;
+      --text:     #c8b99a;
+      --text-dim: #7a6a4a;
+      --red:      #e87070;
+    }
+
+    html, body { min-height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Fontin', Georgia, serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ── */
+    #header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    #header-logo { height: 36px; }
+    #header h1 { font-size: 1.1rem; color: var(--gold); letter-spacing: 0.06em; flex: 1; }
+    #header-nav { display: flex; gap: 0.5rem; }
+    #header-nav a {
+      color: var(--text-dim); text-decoration: none;
+      font-size: 0.82rem; padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border); border-radius: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #header-nav a:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+    /* ── Page ── */
+    #page {
+      max-width: 1204px;
+      margin: 0 auto;
+      padding: 2rem 1.2rem 5rem;
+    }
+
+    #options-header { margin-bottom: 1rem; }
+    #options-header h2 {
+      font-family: 'Fontin SmallCaps', 'Fontin', serif;
+      font-size: 1.8rem; color: var(--gold); line-height: 1.2;
+    }
+
+    .intro-text {
+      color: var(--text-dim); font-size: 0.88rem;
+      margin-bottom: 1.5rem; line-height: 1.6;
+    }
+    .intro-text a { color: var(--gold); text-decoration: none; }
+    .intro-text a:hover { text-decoration: underline; }
+
+    /* ── Meta options (name + preset) ── */
+    #meta-options {
+      background: var(--bg2); border: 1px solid var(--border);
+      padding: 0.9rem 1rem; border-radius: 3px;
+      display: flex; flex-wrap: wrap; gap: 1.2rem;
+      margin-bottom: 1.2rem; align-items: flex-end;
+    }
+    .meta-field { display: flex; flex-direction: column; gap: 0.25rem; }
+    .meta-field label {
+      font-size: 0.72rem; color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .meta-field input, .meta-field select {
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 0.88rem;
+      padding: 0.32rem 0.6rem; border-radius: 2px; outline: none;
+      min-width: 200px;
+    }
+    .meta-field input:focus, .meta-field select:focus { border-color: var(--gold-dim); }
+
+    /* ── Option groups ── */
+    .group-container {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 3px; margin-bottom: 0.6rem; overflow: hidden;
+    }
+    .group-container summary {
+      font-family: 'Fontin SmallCaps', 'Fontin', serif;
+      font-size: 1rem; color: var(--gold);
+      padding: 0.65rem 1rem; cursor: pointer;
+      user-select: none; list-style: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.06em; transition: background 0.15s;
+    }
+    .group-container summary::-webkit-details-marker { display: none; }
+    .group-container summary::before {
+      content: '▾'; color: var(--gold-dim); font-size: 2.25rem;
+      transition: transform 0.2s; display: inline-block; flex-shrink: 0;
+      line-height: 1;
+    }
+    .group-container:not([open]) summary { border-bottom-color: transparent; }
+    .group-container:not([open]) summary::before { transform: rotate(-90deg); }
+    .group-container summary:hover { background: var(--bg3); }
+
+    .group-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Individual option ── */
+    .option-row {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .option-row:nth-child(even) { border-right: none; }
+    .option-row:last-child,
+    .option-row:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+    .option-row.full-width { grid-column: 1 / -1; border-right: none; }
+    .option-row.full-width:last-child { border-bottom: none; }
+
+    .option-label {
+      font-size: 0.82rem; margin-bottom: 0.4rem;
+      display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;
+    }
+    .option-label strong { color: var(--gold); }
+
+    /* Tooltip */
+    .tip-wrap { position: relative; display: inline-block; }
+    .tip-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 1px solid var(--text-dim); color: var(--text-dim);
+      font-size: 0.6rem; cursor: help; flex-shrink: 0;
+    }
+    .tip-icon:hover { border-color: var(--gold); color: var(--gold); }
+    .tip-bubble {
+      display: none; position: absolute; left: 1.3rem; top: -4px;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); font-size: 0.75rem; line-height: 1.5;
+      padding: 0.5rem 0.7rem; border-radius: 3px;
+      width: 280px; z-index: 200; white-space: pre-wrap;
+      pointer-events: none;
+    }
+
+    /* Select */
+    .opt-select {
+      width: 100%;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 0.82rem;
+      padding: 0.28rem 1.4rem 0.28rem 0.5rem;
+      border-radius: 2px; outline: none; cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a6030'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+    }
+    .opt-select:focus { border-color: var(--gold-dim); }
+
+    /* Range */
+    .range-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .opt-range {
+      flex: 1; -webkit-appearance: none; appearance: none;
+      height: 4px; background: var(--bg3);
+      border: 1px solid var(--border); border-radius: 2px;
+      outline: none; cursor: pointer;
+    }
+    .opt-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid var(--gold); cursor: pointer;
+    }
+    .opt-range::-webkit-slider-thumb:hover { background: var(--gold); }
+    .opt-range::-moz-range-thumb {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid var(--gold); cursor: pointer;
+    }
+    .range-val {
+      min-width: 2.2rem; text-align: right;
+      color: var(--gold); font-size: 0.85rem; font-weight: bold;
+    }
+
+    /* OptionSet */
+    .check-actions { display: flex; gap: 0.35rem; margin-bottom: 0.4rem; }
+    .check-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--text-dim); font-family: inherit; font-size: 0.7rem;
+      padding: 0.12rem 0.5rem; cursor: pointer; border-radius: 2px;
+    }
+    .check-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+    .check-search {
+      width: 100%; background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 0.78rem;
+      padding: 0.25rem 0.5rem; border-radius: 2px; outline: none;
+      margin-bottom: 0.4rem; display: block;
+    }
+    .check-search:focus { border-color: var(--gold-dim); }
+    .check-grid { display: flex; flex-wrap: wrap; gap: 0.25rem; max-height: 200px; overflow-y: auto; }
+
+    /* Boss category layout */
+    .boss-sections { display: flex; flex-direction: column; gap: 0.6rem; }
+    .boss-cat-label {
+      font-size: 0.68rem; color: var(--gold-dim);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 0.2rem;
+    }
+    .boss-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.25rem;
+    }
+
+    .check-item {
+      display: flex; align-items: center; gap: 0.25rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 2px; padding: 0.18rem 0.4rem;
+      font-size: 0.72rem; cursor: pointer; transition: border-color 0.15s;
+      user-select: none;
+    }
+    .check-item:has(input:checked) { border-color: var(--gold-dim); color: var(--gold); }
+    .check-item input { accent-color: var(--gold); cursor: pointer; margin: 0; }
+
+    /* ── Actions bar ── */
+    #actions {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 0.7rem 1.2rem;
+      display: flex; align-items: center; gap: 1rem;
+      z-index: 50;
+    }
+    #actions-note { font-size: 0.75rem; color: var(--text-dim); flex: 1; }
+    #btn-download {
+      background: #2a2208; border: 2px solid #c8a030;
+      color: #f0d080; font-family: inherit; font-size: 1.35rem;
+      padding: 0.55rem 2.1rem; cursor: pointer; border-radius: 3px;
+      letter-spacing: 0.04em; transition: background 0.2s, border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    #btn-download:hover { background: #3a3010; border-color: #f0d080; color: #fff8e0; }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      #header h1 { font-size: 0.85rem; }
+      #header-logo { height: 26px; }
+      #page { padding: 1rem 0.75rem 5rem; }
+      .group-options { grid-template-columns: 1fr; }
+      .option-row { border-right: none; }
+      .option-row:last-child { border-bottom: none; }
+      .option-row:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="header">
+  <img id="header-logo" src="images/poeAP.png" alt="PoE Archipelago">
+  <h1>Archipelago · Path of Exile Options</h1>
+  <nav id="header-nav">
+    <a href="index.html">Tracker</a>
+    <a href="guide.html">Guide</a>
+  </nav>
+</div>
+
+<div id="page">
+  <div id="options-header">
+    <h2>Path of Exile</h2>
+    <h2>Player Options</h2>
+  </div>
+
+  <p class="intro-text">
+    Choose the options you would like to play with, then download your <code>.yaml</code> file.<br>
+    Join a multiworld at <a href="https://archipelago.gg" target="_blank">archipelago.gg</a> or
+    <a href="https://multiworld.gg" target="_blank">multiworld.gg</a>.
+  </p>
+
+  <div id="meta-options">
+    <div class="meta-field">
+      <label for="player-name">Player Name</label>
+      <input id="player-name" type="text" placeholder="Player" maxlength="16">
+    </div>
+    <div class="meta-field">
+      <label for="preset-select">Options Preset</label>
+      <select id="preset-select">
+        <option value="">Default</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="option-groups">
+    <div style="color:var(--text-dim);font-style:italic;padding:2rem;text-align:center">Loading options…</div>
+  </div>
+
+  <div id="actions">
+    <span id="actions-note">Options are not saved — download to keep them.</span>
+    <button id="btn-download">⬇ Download .yaml</button>
+  </div>
+</div>
+
+<script>
+let OPTIONS_DATA = null;
+
+// ── Rendering ─────────────────────────────────────────────────────────────────
+
+function tipHtml(description) {
+  if (!description) return '';
+  const escaped = description.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return `<span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-bubble">${escaped}</span></span>`;
+}
+
+function labelHtml(opt) {
+  return `<div class="option-label"><strong>${opt.display_name}</strong>${tipHtml(opt.description)}</div>`;
+}
+
+function renderChoice(opt) {
+  const isRandom = opt.default === 'random';
+  const opts = opt.choices.map(c => {
+    const sel = !isRandom && c.value === opt.default ? ' selected' : '';
+    return `<option value="${c.value}"${sel}>${c.display_name} (${c.value})</option>`;
+  });
+  if (isRandom) opts.unshift(`<option value="random" selected>Random</option>`);
+  return `${labelHtml(opt)}<select class="opt-select" id="opt-${opt.name}">${opts.join('')}</select>`;
+}
+
+function renderToggle(opt) {
+  const on  = opt.default ? ' selected' : '';
+  const off = opt.default ? '' : ' selected';
+  return `${labelHtml(opt)}
+    <select class="opt-select" id="opt-${opt.name}">
+      <option value="0"${off}>Off (0)</option>
+      <option value="1"${on}>On (1)</option>
+    </select>`;
+}
+
+function renderRange(opt) {
+  const id = `opt-${opt.name}`;
+  if (opt.named_values && opt.named_values.length) {
+    const selOpts = opt.named_values.map(nv => {
+      const sel = nv.value === opt.default ? ' selected' : '';
+      return `<option value="${nv.value}"${sel}>${nv.display_name} (${nv.value})</option>`;
+    });
+    selOpts.push(`<option value="custom" hidden>Custom</option>`);
+    return `${labelHtml(opt)}
+      <select class="opt-select" id="${id}-select" style="margin-bottom:0.35rem"
+        onchange="syncRangeFromSelect('${opt.name}')">
+        ${selOpts.join('')}
+      </select>
+      <div class="range-wrap">
+        <input type="range" class="opt-range" id="${id}"
+          min="${opt.range_start}" max="${opt.range_end}" value="${opt.default}"
+          oninput="syncSelectFromRange('${opt.name}',this.value)">
+        <span class="range-val" id="${id}-val">${opt.default}</span>
+      </div>`;
+  }
+  return `${labelHtml(opt)}
+    <div class="range-wrap">
+      <input type="range" class="opt-range" id="${id}"
+        min="${opt.range_start}" max="${opt.range_end}" value="${opt.default}"
+        oninput="document.getElementById('${id}-val').textContent=this.value">
+      <span class="range-val" id="${id}-val">${opt.default}</span>
+    </div>`;
+}
+
+function checkItem(k, checked) {
+  return `<label class="check-item"><input type="checkbox" value="${k.replace(/"/g,'&quot;')}"${checked ? ' checked' : ''}>${k.replace(/_/g,' ')}</label>`;
+}
+
+function renderBossGrid(opt) {
+  const defaultSet = new Set(opt.default || []);
+  const groups = opt.boss_groups || {};
+  const catOrder = ['Guardian', 'Pinnacle', 'Uber'];
+  const sections = catOrder.map(cat => {
+    const keys = groups[cat] || [];
+    if (!keys.length) return '';
+    const items = keys.map(k => checkItem(k, defaultSet.has(k))).join('');
+    return `<div class="boss-category">
+      <div class="boss-cat-label">${cat}</div>
+      <div class="boss-grid">${items}</div>
+    </div>`;
+  }).join('');
+  return `${labelHtml(opt)}
+    <div class="check-actions">
+      <button type="button" class="check-btn" onclick="setAllChecks('${opt.name}',true)">All</button>
+      <button type="button" class="check-btn" onclick="setAllChecks('${opt.name}',false)">None</button>
+      <button type="button" class="check-btn" onclick="resetChecks('${opt.name}')">Default</button>
+    </div>
+    <div id="opt-${opt.name}-grid" class="boss-sections">${sections}</div>`;
+}
+
+function renderOptionSet(opt) {
+  if (opt.boss_groups) return renderBossGrid(opt);
+  const defaultSet = new Set(opt.default || []);
+  const keys = opt.valid_keys || [];
+  const checks = keys.map(k => checkItem(k, defaultSet.has(k))).join('');
+  const searchBar = keys.length > 20
+    ? `<input type="text" class="check-search" placeholder="Search…" oninput="filterChecks('${opt.name}',this.value)">`
+    : '';
+  return `${labelHtml(opt)}
+    <div class="check-actions">
+      <button type="button" class="check-btn" onclick="setAllChecks('${opt.name}',true)">All</button>
+      <button type="button" class="check-btn" onclick="setAllChecks('${opt.name}',false)">None</button>
+      <button type="button" class="check-btn" onclick="resetChecks('${opt.name}')">Default</button>
+    </div>
+    ${searchBar}
+    <div class="check-grid" id="opt-${opt.name}-grid">${checks}</div>`;
+}
+
+function renderOption(opt) {
+  if (opt.type === 'unknown') return null;  // output in YAML only, no UI needed
+  const full = opt.type === 'option_set';
+  let inner;
+  if      (opt.type === 'choice')     inner = renderChoice(opt);
+  else if (opt.type === 'toggle')     inner = renderToggle(opt);
+  else if (opt.type === 'range')      inner = renderRange(opt);
+  else if (opt.type === 'option_set') inner = renderOptionSet(opt);
+  else return null;
+  return `<div class="option-row${full ? ' full-width' : ''}" data-opt="${opt.name}">${inner}</div>`;
+}
+
+function renderGroups(data) {
+  document.getElementById('option-groups').innerHTML = data.groups.map(grp => {
+    const rows = grp.options.map(renderOption).filter(Boolean).join('');
+    if (!rows) return '';  // skip groups with nothing renderable
+    const collapsed = grp.name === 'Item & Location Options' ? '' : ' open';
+    return `<details class="group-container"${collapsed}>
+      <summary>${grp.name}</summary>
+      <div class="group-options">${rows}</div>
+    </details>`;
+  }).join('');
+}
+
+// ── Range ↔ Select sync ───────────────────────────────────────────────────────
+
+window.syncRangeFromSelect = function(name) {
+  const sel = document.getElementById(`opt-${name}-select`);
+  const range = document.getElementById(`opt-${name}`);
+  if (sel && range && sel.value !== 'custom') {
+    range.value = sel.value;
+    document.getElementById(`opt-${name}-val`).textContent = sel.value;
+  }
+};
+
+window.syncSelectFromRange = function(name, v) {
+  const valEl = document.getElementById(`opt-${name}-val`);
+  if (valEl) valEl.textContent = v;
+  const sel = document.getElementById(`opt-${name}-select`);
+  if (!sel) return;
+  const match = [...sel.options].find(o => o.value === String(v) && o.value !== 'custom');
+  sel.value = match ? String(v) : 'custom';
+};
+
+// ── Checkbox helpers ──────────────────────────────────────────────────────────
+
+window.setAllChecks = function(name, checked) {
+  document.querySelectorAll(`#opt-${name}-grid input[type=checkbox]`).forEach(cb => cb.checked = checked);
+};
+
+window.resetChecks = function(name) {
+  const opt = OPTIONS_DATA.groups.flatMap(g => g.options).find(o => o.name === name);
+  if (!opt) return;
+  const defSet = new Set((opt.default || []).map(String));
+  document.querySelectorAll(`#opt-${name}-grid input[type=checkbox]`).forEach(cb => {
+    cb.checked = defSet.has(cb.value);
+  });
+};
+
+window.filterChecks = function(name, query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll(`#opt-${name}-grid .check-item`).forEach(item => {
+    const text = item.textContent.trim().toLowerCase();
+    item.style.display = (!q || text.includes(q)) ? '' : 'none';
+  });
+};
+
+// ── Presets ───────────────────────────────────────────────────────────────────
+
+function populatePresets(data) {
+  const sel = document.getElementById('preset-select');
+  Object.keys(data.presets).forEach(name => {
+    const o = document.createElement('option');
+    o.value = name; o.textContent = name;
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change', () => applyPreset(data, data.presets[sel.value] || {}));
+}
+
+function setOptionValue(opt, val) {
+  if (opt.type === 'unknown') return;
+  if (opt.type === 'option_set') {
+    const set = new Set(Array.isArray(val) ? val.map(String) : []);
+    document.querySelectorAll(`#opt-${opt.name}-grid input[type=checkbox]`)
+      .forEach(cb => cb.checked = set.has(cb.value));
+  } else if (opt.type === 'range') {
+    const range = document.getElementById(`opt-${opt.name}`);
+    if (range) { range.value = val; syncSelectFromRange(opt.name, String(val)); }
+  } else {
+    const el = document.getElementById(`opt-${opt.name}`);
+    if (el) el.value = String(val);
+  }
+}
+
+function applyPreset(data, overrides) {
+  for (const grp of data.groups)
+    for (const opt of grp.options) setOptionValue(opt, opt.default);
+  const byName = Object.fromEntries(data.groups.flatMap(g => g.options).map(o => [o.name, o]));
+  for (const [k, v] of Object.entries(overrides))
+    if (byName[k]) setOptionValue(byName[k], v);
+  updateGoalDependentOptions();
+}
+
+// ── YAML ──────────────────────────────────────────────────────────────────────
+
+const DICT_UNKNOWNS = new Set(['start_inventory', 'start_inventory_from_pool', 'start_inventory_pool']);
+
+function optToYamlLines(opt, pad) {
+  const lines = [];
+
+  function addDesc(desc) {
+    if (!desc) return;
+    desc.split('\n').forEach(l => lines.push(`${pad}  # ${l}`));
+  }
+
+  lines.push('');
+  lines.push(`${pad}${opt.name}:`);
+
+  if (opt.type === 'choice') {
+    addDesc(opt.description);
+    const el = document.getElementById(`opt-${opt.name}`);
+    const cur = el ? el.value : String(opt.default);
+    const isRandom = cur === 'random';
+    opt.choices.forEach(c => {
+      const w = (!isRandom && c.value === parseInt(cur, 10)) ? 50 : 0;
+      lines.push(`${pad}  ${c.name}: ${w}`);
+    });
+    if (isRandom) lines.push(`${pad}  random: 50`);
+
+  } else if (opt.type === 'toggle') {
+    addDesc(opt.description);
+    const el = document.getElementById(`opt-${opt.name}`);
+    const isOn = el ? el.value === '1' : opt.default === 1;
+    lines.push(`${pad}  'false': ${isOn ? 0 : 50}`);
+    lines.push(`${pad}  'true': ${isOn ? 50 : 0}`);
+
+  } else if (opt.type === 'range') {
+    addDesc(opt.description);
+    lines.push(`${pad}  #`);
+    lines.push(`${pad}  # You can define additional values between the minimum and maximum values.`);
+    lines.push(`${pad}  # Minimum value is ${opt.range_start}`);
+    lines.push(`${pad}  # Maximum value is ${opt.range_end}`);
+    const el = document.getElementById(`opt-${opt.name}`);
+    const cur = el ? parseInt(el.value, 10) : opt.default;
+    if (opt.named_values && opt.named_values.length) {
+      lines.push(`${pad}  random: 0`);
+      lines.push(`${pad}  random-low: 0 # random value weighted towards lower values`);
+      lines.push(`${pad}  random-high: 0 # random value weighted towards higher values`);
+      lines.push(`${pad}  random-range-${opt.range_start}-${opt.range_end}: 0 # random value between ${opt.range_start} and ${opt.range_end}`);
+      opt.named_values.forEach(nv => {
+        lines.push(`${pad}  ${nv.name}: ${nv.value === cur ? 50 : 0} # equivalent to ${nv.value}`);
+      });
+    } else {
+      lines.push(`${pad}  ${cur}: 50`);
+      lines.push(`${pad}  random: 0`);
+      lines.push(`${pad}  random-low: 0 # random value weighted towards lower values`);
+      lines.push(`${pad}  random-high: 0 # random value weighted towards higher values`);
+      lines.push(`${pad}  random-range-${opt.range_start}-${opt.range_end}: 0 # random value between ${opt.range_start} and ${opt.range_end}`);
+    }
+
+  } else if (opt.type === 'option_set') {
+    addDesc(opt.description);
+    if (!opt.valid_keys || opt.valid_keys.length === 0) {
+      const ta = document.getElementById(`opt-${opt.name}`);
+      const items = ta ? ta.value.split('\n').map(s => s.trim()).filter(Boolean) : [];
+      if (items.length === 0) {
+        lines.push(`${pad}  []`);
+      } else {
+        items.forEach(item => lines.push(`${pad}  - ${item}`));
+      }
+    } else {
+      const checked = [...document.querySelectorAll(`#opt-${opt.name}-grid input:checked`)].map(c => c.value);
+      if (checked.length === 0) {
+        lines.push(`${pad}  []`);
+      } else {
+        lines.push(`${pad}  [${checked.map(k => `'${k}'`).join(', ')}]`);
+      }
+    }
+
+  } else if (opt.type === 'unknown') {
+    addDesc(opt.description);
+    lines.push(`${pad}  ${DICT_UNKNOWNS.has(opt.name) ? '{}' : '[]'}`);
+  }
+
+  return lines;
+}
+
+function toYaml(playerName) {
+  const vi = OPTIONS_DATA.version_info || {};
+  const apVer = vi.minimum_ap_version || vi.ap_version || '0.6.7';
+  const worldVer = vi.world_version || '1.0.0';
+  const lines = [
+    `name: ${playerName || 'Player'}`,
+    ``,
+    `description: Generated by Path of Exile AP Options page`,
+    ``,
+    `game: Path of Exile`,
+    `requires:`,
+    `  version: ${apVer} # Version of Archipelago required for this yaml to work as expected.`,
+    `  game:`,
+    `    Path of Exile: ${worldVer} # Version of the world required for this yaml to work as expected.`,
+    ``,
+    `Path of Exile:`,
+  ];
+  for (const grp of OPTIONS_DATA.groups) {
+    const pad = '  ';
+    lines.push('');
+    const label = `# ${grp.name} #`;
+    const bar = '#'.repeat(label.length);
+    lines.push(`${pad}${bar}`);
+    lines.push(`${pad}${label}`);
+    lines.push(`${pad}${bar}`);
+    for (const opt of grp.options) {
+      lines.push(...optToYamlLines(opt, pad));
+    }
+  }
+  return lines.join('\n');
+}
+
+document.getElementById('btn-download').addEventListener('click', () => {
+  const name = document.getElementById('player-name').value.trim() || 'Player';
+  const blob = new Blob([toYaml(name)], { type: 'text/yaml' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob), download: `${name}.yaml`
+  });
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// ── Tooltips (viewport-aware positioning) ────────────────────────────────────
+
+document.addEventListener('mouseover', e => {
+  const icon = e.target.closest('.tip-icon');
+  if (!icon) return;
+  const wrap = icon.closest('.tip-wrap');
+  const bubble = wrap && wrap.querySelector('.tip-bubble');
+  if (!bubble) return;
+  // Decide direction using icon's already-rendered position (no reflow needed)
+  const iconRect = icon.getBoundingClientRect();
+  const wouldClipRight = iconRect.left + 21 + 280 > window.innerWidth - 8;
+  bubble.style.left = wouldClipRight ? 'auto' : '1.3rem';
+  bubble.style.right = wouldClipRight ? '1.3rem' : 'auto';
+  bubble.style.display = 'block';
+});
+
+document.addEventListener('mouseout', e => {
+  const icon = e.target.closest('.tip-icon');
+  if (!icon) return;
+  const wrap = icon.closest('.tip-wrap');
+  const bubble = wrap && wrap.querySelector('.tip-bubble');
+  if (bubble) { bubble.style.display = ''; bubble.style.left = ''; bubble.style.right = ''; }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+function updateGoalDependentOptions() {
+  const goalEl = document.getElementById('opt-goal');
+  const isDefeatBosses = goalEl && goalEl.value === String(
+    OPTIONS_DATA.groups.flatMap(g => g.options)
+      .find(o => o.name === 'goal')
+      ?.choices.find(c => c.name === 'defeat_bosses')?.value ?? -1
+  );
+  ['number_of_bosses', 'bosses_available'].forEach(name => {
+    const row = document.querySelector(`[data-opt="${name}"]`);
+    if (row) row.style.display = isDefeatBosses ? '' : 'none';
+  });
+}
+
+fetch('options_data.json')
+  .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+  .then(data => {
+    OPTIONS_DATA = data;
+    renderGroups(data);
+    populatePresets(data);
+    updateGoalDependentOptions();
+    document.getElementById('opt-goal')?.addEventListener('change', updateGoalDependentOptions);
+  })
+  .catch(err => {
+    document.getElementById('option-groups').innerHTML =
+      `<div style="color:var(--red);padding:2rem;text-align:center">Failed to load options_data.json: ${err}</div>`;
+  });
+</script>
+
+</body>
+</html>

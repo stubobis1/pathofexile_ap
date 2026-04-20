@@ -15,6 +15,10 @@
   <div id="status-dot" title="Disconnected"></div>
   <span id="status-text">Disconnected</span>
   <button id="btn-reconnect" title="Show connection panel" style="display:none">Reconnect</button>
+  <nav id="header-nav">
+    <a href="guide.html">Guide</a>
+    <a href="options.html">Options</a>
+  </nav>
 </div>
 
 <div id="connect-panel">
@@ -852,6 +856,20 @@ document.querySelectorAll('#connect-panel input').forEach(inp => {
 const saved = JSON.parse(localStorage.getItem('apoe-tracker') || '{}');
 if (saved.server) document.getElementById('f-server').value = saved.server;
 if (saved.slot)   document.getElementById('f-slot').value   = saved.slot;
+
+// ── Pre-fill from OAuth redirect params (override saved if present) ───────────
+(function () {
+  const p = new URLSearchParams(location.search);
+  const server   = p.get('server');
+  const slot     = p.get('slot');
+  const password = p.get('password');
+  if (server)   document.getElementById('f-server').value = server;
+  if (slot)     document.getElementById('f-slot').value   = slot;
+  if (password) document.getElementById('f-pass').value   = password;
+  if (server || slot || password) {
+    history.replaceState({}, '', location.pathname + location.hash);
+  }
+})();
 
 btnConnect.addEventListener('click', () => {
   localStorage.setItem('apoe-tracker', JSON.stringify({
