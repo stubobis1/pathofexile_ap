@@ -492,8 +492,8 @@
         <li><a href="#install-archipelago">1 · Install Archipelago</a></li>
         <li><a href="#add-apworld">2 · Add .apworld</a></li>
         <li><a href="#generate">3 · Generate / Join</a></li>
-        <li><a href="#poptracker">4 · Web Tracker</a></li>
-        <li><a href="#start-client">5 · Start Client</a></li>
+        <li><a href="#start-client">4 · Start Client</a></li>
+        <li><a href="#poptracker">5 · Web Tracker</a></li>
       </ul>
       <div class="nav-section">Reference</div>
       <ul>
@@ -859,9 +859,63 @@
       Get the server address and use the slot name from your <code>.yaml</code> file when connecting.</p>
     </section>
 
+
+    <!-- ── Start Client ── -->
+    <section class="guide-section" id="start-client">
+      <h2>Step 4 · Start the Client &amp; Play</h2>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <p>In <code>ArchipelagoLauncher.exe</code>, find and click <strong>Path of Exile</strong> in the client list to open the PoE client window.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <p>In the <strong>Server</strong> bar at the top, enter your slot name, password, and server address in the format <code>SlotName:password@host:port</code> then click <strong>Connect</strong>.</p>
+            <p>If hosting yourself, it will be <code>127.0.0.1:38281</code> for the host and port.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <p>Launch Path of Exile and log in.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <p>Type <code>!apchar</code> in the in-game chat, or set your character in the client console: <code>/char YourCharacterName</code></p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <p>The log path should be automatically set when loading, but if it isn't working, set your log path using something like: <code>/client "C:\...\logs\Client.txt"</code> (replace with your path, and include the quotes)</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <p>Set your item filter: <code>/filter MyFilter.filter</code><br>
+            This should be a local filter file in your Path of Exile documents folder. This is an optional step, but one that can enhance your gameplay experience.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">8</div>
+          <div class="step-body">
+            <p>Type <code>/start</code> and enter the game. The item filter will load and you'll see highlighted items immediately.</p>
+            <p>Enter a zone to trigger your first check. Welcome to the randomizer!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── Tracker ── -->
     <section class="guide-section" id="poptracker">
-      <h2>Step 4 · Open the Web Tracker <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional but Recommended)</span></h2>
+      <h2>Step 5 · Open the Web Tracker <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional but Recommended)</span></h2>
       <p>The web tracker gives you a live dashboard of your received gems, gear unlocks, equipment slots, locations, and hints — no install required.</p>
 
       <div class="step-list">
@@ -888,61 +942,6 @@
       <div class="info-box ok" style="margin-top:1rem">
         <div class="box-title">Hover for Gem Details</div>
         <p>Hover over any gem in the Items tab to see a full tooltip — level requirements, stat text, and description — pulled live from the Path of Exile wiki.</p>
-      </div>
-    </section>
-
-    <!-- ── Start Client ── -->
-    <section class="guide-section" id="start-client">
-      <h2>Step 5 · Start the Client &amp; Play</h2>
-
-      <div class="step-list">
-        <div class="step-card">
-          <div class="step-num">1</div>
-          <div class="step-body">
-            <p>In <code>ArchipelagoLauncher.exe</code>, find and click <strong>Path of Exile</strong> in the client list to open the PoE client window.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <p>In the <strong>Server</strong> bar at the top, enter your address and click <strong>Connect</strong>.
-            
-            <p>When prompted, enter your slot name. If a password is set, use <code>SlotName:password@host:port</code>.</p>
-            <p>If hosting yourself, it will be <code>127.0.0.1:38281</code> for the host and port.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">4</div>
-          <div class="step-body">
-            <p>Launch Path of Exile and log in. Note your character's exact name.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">5</div>
-          <div class="step-body">
-            <p>Type <code>!apchar</code> in the in-game chat, or set your character in the client console: <code>/char YourCharacterName</code></p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">6</div>
-          <div class="step-body">
-            <p>The log path should be automatically set when loading, but if it isn't working, set your log path to something like: <code>/client "C:\...\logs\Client.txt"</code> (include the quotes)</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">7</div>
-          <div class="step-body">
-            <p>Set your item filter: <code>/filter MyFilter.filter</code><br>
-            This should be a local filter file in your Path of Exile documents folder.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">8</div>
-          <div class="step-body">
-            <p>Type <code>/start</code> and enter the game. The item filter will load and you'll see highlighted items immediately.</p>
-            <p>Enter a zone to trigger your first check. Welcome to the randomizer!</p>
-          </div>
-        </div>
       </div>
     </section>
 
