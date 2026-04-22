@@ -863,16 +863,19 @@ if (saved.slot)   document.getElementById('f-slot').value   = saved.slot;
   const server   = p.get('server');
   const slot     = p.get('slot');
   const password = p.get('password');
-  console.log('[AP] OAuth params:', { server, slot, password: password ? '***' : null });
+  const autoconnect = p.get('autoconnect') === '1';
+  console.log('[AP] OAuth params:', { server, slot, password: password ? '***' : null, autoconnect });
   if (server)   document.getElementById('f-server').value = server;
   if (slot)     document.getElementById('f-slot').value   = slot;
   if (password) document.getElementById('f-pass').value   = password;
-  if (server || slot || password) {
+  if (server || slot || password || autoconnect) {
     history.replaceState({}, '', location.pathname + location.hash);
   }
-  if (server && slot) {
-    console.log('[AP] Auto-connecting to', server, 'as', slot);
-    setTimeout(connect, 0);
+  if (autoconnect) {
+    const filledServer = document.getElementById('f-server').value.trim();
+    const filledSlot   = document.getElementById('f-slot').value.trim();
+    console.log('[AP] Auto-connecting to', filledServer, 'as', filledSlot);
+    if (filledServer && filledSlot) setTimeout(connect, 0);
   }
 })();
 
