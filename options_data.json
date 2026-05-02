@@ -444,6 +444,13 @@
           "default": 1
         },
         {
+          "name": "add_area_locations_to_location_pool",
+          "display_name": "Area visits as location checks",
+          "type": "toggle",
+          "description": "Specifies if reaching areas (zones) should be considered \"locations\".\nOnly areas up to the goal act are included.",
+          "default": 1
+        },
+        {
           "name": "add_skill_gems_to_item_pool",
           "display_name": "Restricted Skill Gems",
           "type": "toggle",
@@ -5323,7 +5330,8 @@
       ],
       "add_passive_skill_points_to_item_pool": 1,
       "add_leveling_up_to_location_pool": 0,
-      "gear_upgrades": 4
+      "gear_upgrades": 4,
+      "add_area_locations_to_location_pool": 0
     },
     "Existing Character - Pinnacle Boss Rush": {
       "goal": 10,
@@ -5344,7 +5352,8 @@
       ],
       "add_passive_skill_points_to_item_pool": 1,
       "add_leveling_up_to_location_pool": 0,
-      "gear_upgrades": 4
+      "gear_upgrades": 4,
+      "add_area_locations_to_location_pool": 0
     },
     "Existing Character - Uber Boss Rush": {
       "goal": 10,
@@ -5360,7 +5369,8 @@
       ],
       "add_passive_skill_points_to_item_pool": 1,
       "add_leveling_up_to_location_pool": 0,
-      "gear_upgrades": 4
+      "gear_upgrades": 4,
+      "add_area_locations_to_location_pool": 0
     },
     "Guardian Boss Rush": {
       "goal": 10,
