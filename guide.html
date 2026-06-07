@@ -308,6 +308,47 @@
     a { color: var(--gold); }
     a:hover { color: #e8c880; }
 
+    /* ── Screenshots ── */
+    .screenshot-figure {
+      margin: 1rem 0;
+    }
+    .screenshot-figure img {
+      width: 100%;
+      max-width: 50%;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: block;
+      cursor: zoom-in;
+      transition: border-color 0.2s;
+    }
+    .screenshot-figure img:hover { border-color: var(--gold-dim); }
+    .screenshot-pair .screenshot-figure img { max-width: 100%; }
+    .screenshot-figure figcaption {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.35rem;
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: 92vw;
+      max-height: 92vh;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    }
+
     /* ── Tips list ── */
     .tips-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
     .tips-list li {
@@ -492,8 +533,7 @@
         <li><a href="#install-archipelago">1 · Install Archipelago</a></li>
         <li><a href="#add-apworld">2 · Add .apworld</a></li>
         <li><a href="#generate">3 · Generate / Join</a></li>
-        <li><a href="#start-client">4 · Start Client</a></li>
-        <li><a href="#poptracker">5 · Web Tracker</a></li>
+        <li><a href="#start-client">4 · ArchiPoElago Client</a></li>
       </ul>
       <div class="nav-section">Reference</div>
       <ul>
@@ -605,18 +645,35 @@
       <div class="unlock-grid">
         <div class="unlock-item">Pick up specific item bases</div>
         <div class="unlock-item">Level up (optional)</div>
+        <div class="unlock-item">Enter a new zone (optional)</div>
       </div>
+
+      <figure class="screenshot-figure" style="margin-top:0.75rem">
+        <img src="images/client/locations-page.png" alt="Locations tab showing checks by Act">
+        <figcaption>The Locations tab in the client — checks are grouped by Act. Strikethrough names are already sent.</figcaption>
+      </figure>
 
       <h3 style="margin-top:1.2rem">Items (things you can receive as unlocks)</h3>
       <div class="unlock-grid">
         <div class="unlock-item">Character classes</div>
         <div class="unlock-item">Ascendancy classes</div>
-        <div class="unlock-item flask">Passive skill points</div>
+        <div class="unlock-item">Passive skill points</div>
         <div class="unlock-item">Gear rarity (Normal→Unique)</div>
-        <div class="unlock-item flask">Flask slots (up to 5)</div>
+        <div class="unlock-item">Flask slots (up to 5)</div>
         <div class="unlock-item">Linked socket count</div>
-        <div class="unlock-item gem" data-gem="Arc">Skill gems <small style="color:var(--text-dim)">(hover for example)</small></div>
-        <div class="unlock-item support" data-gem="Added Cold Damage Support">Support gems</div>
+        <div class="unlock-item" data-gem="Arc">Skill gems <small style="color:var(--text-dim)">(hover for example)</small></div>
+        <div class="unlock-item" data-gem="Added Cold Damage Support">Support gems <small style="color:var(--text-dim)">(hover for example)</small></div>
+      </div>
+
+      <div class="screenshot-pair" style="display:flex;gap:1rem;margin-top:0.75rem;flex-wrap:wrap">
+        <figure class="screenshot-figure" style="margin:0;flex:1;min-width:240px">
+          <img src="images/client/item-page.png" alt="Items tab showing received classes, gems and passives">
+          <figcaption>Items tab — every unlock received: passives, classes, ascendancies, skill gems.</figcaption>
+        </figure>
+        <figure class="screenshot-figure" style="margin:0;flex:1;min-width:240px">
+          <img src="images/client/item-paper-doll-display.png" alt="Gear tab showing unlocked rarity per slot">
+          <figcaption>Gear tab — which rarity and link count is unlocked per equipment slot.</figcaption>
+        </figure>
       </div>
 
       <div class="info-box" style="margin-top:1rem">
@@ -646,6 +703,15 @@
         Everything in between works too.
       </p>
 
+      <h3>Existing Character Mode</h3>
+      <p>
+        Got an existing character and want a faster game? Unequip all your gear and refund every passive
+        point. Set your goal to kill a specific boss — or more than one — and include gems, passives, and 
+        gear in the shuffle. Launch the game and build around whatever the multiworld hands you. No planning, 
+        no preset build — just react and adapt until you kill the boss. All the Archipelago experience without 
+        levelling a character from scratch.
+      </p>
+
       <h3>Goal</h3>
       <p>Choose what ends your run. Options range from simply completing the campaign to killing specific pinnacle bosses
       like Shaper, Elder, or Maven. You can also set a custom kill count or boss checklist.</p>
@@ -663,14 +729,6 @@
       <p>Archipelago can weight the item pool so that key unlocks — like your needed skill gems, gear unlocks, or ascendancies —
       tend to arrive early rather than being buried in late checks. Adjust the <code>progression_balancing</code>
       slider in your <code>.yaml</code> to control how aggressively it front-loads important items.</p>
-
-      <div class="info-box" style="margin-top:1rem">
-        <div class="box-title">Easy Options Editor</div>
-        <p>You can configure everything visually (no YAML editing required) at
-        <a href="https://ap.stripesoo7.org/games/Path%20of%20Exile/player-options" target="_blank">ap.stripesoo7.org</a>
-        or <a href="https://multiworld.gg/games/Path%20of%20Exile/player-options" target="_blank">multiworld.gg</a>.
-        Generate the file there and drop it straight into your <code>Players/</code> folder.</p>
-      </div>
     </section>
 
 
@@ -688,9 +746,9 @@
         <div class="step-card">
           <div class="step-num">✓</div>
           <div class="step-body">
-            <p><strong>Python 3.12</strong> — required by Archipelago.
-            <a href="https://www.python.org/downloads/release/python-31210/" target="_blank">Download Python 3.12.</a></p>
-            <p style="color:var(--red);font-size:0.82rem">Python 3.13 will NOT work. Use 3.12 specifically.</p>
+            <p><strong>ArchiPoElago client</strong> — the standalone PoE randomizer client.
+            Download from <a href="https://github.com/stubobis1/Path-of-Exile-Archipelago-Client/releases" target="_blank">github.com/stubobis1/Path-of-Exile-Archipelago-Client</a>.
+            </p>
           </div>
         </div>
         <div class="step-card">
@@ -768,62 +826,28 @@
       <h2>Step 3 · Generate or Join a Game</h2>
       <p>You need a <code>.yaml</code> settings file that tells Archipelago what kind of run you want.</p>
 
-      <h3>Creating your settings file — recommended</h3>
+      <h3>Option A — YAML Generator (recommended)</h3>
       <div class="step-list">
         <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <p>Open the visual options editor at
-            <a href="https://ap.stripesoo7.org/games/Path%20of%20Exile/player-options" target="_blank">ap.stripesoo7.org</a>
-            or <a href="https://multiworld.gg/games/Path%20of%20Exile/player-options" target="_blank">multiworld.gg</a>.
-            No installation required — everything is point-and-click.</p>
+            <p>Open the ArchiPoElago client and click <strong>YAML Generator</strong> in the sidebar.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-body">
-            <p>Set your slot name, goal, starting class, and any other options you want to tweak.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <p>Download the generated <code>.yaml</code> and place it in your <code>Archipelago/Players/</code> folder.</p>
+            <p>Fill in the options — each one has a description. When done, click <strong>Export YAML</strong></p>
           </div>
         </div>
       </div>
 
-      <h3>Creating your settings file — manual</h3>
+      <h3>Option B — Manual template</h3>
       <div class="step-list">
         <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <p>In <code>ArchipelagoLauncher.exe</code>, click <strong>Generate Template Options</strong> (near the bottom of the list).</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <p>Open <code>Archipelago/Players/Templates/Path of Exile.yaml</code> in any text editor.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <p>Edit to taste. Key settings:</p>
-            <ul style="margin-top:0.4rem;padding-left:1.2rem;font-size:0.88rem;color:var(--text-dim);display:flex;flex-direction:column;gap:0.3rem">
-              <li><code>name</code> — your player slot name (e.g. <code>ChrisWilsonsBeard</code>)</li>
-              <li><code>goal</code> — what ends your run (campaign, bosses, etc.)</li>
-              <li><code>starting_character</code> — which class you begin with (or <code>random</code>)</li>
-              <li><code>usable_starting_gear</code> — how much starter gear you keep</li>
-              <li><code>add_passive_skill_points_to_item_pool</code> — locks and unlocks passive points</li>
-            </ul>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">4</div>
-          <div class="step-body">
-            <p>Save your edited file to <code>Archipelago/Players/</code> (not the Templates subfolder).</p>
+            <p>In <code>ArchipelagoLauncher.exe</code>, click <strong>Generate Template Options</strong>, then open <code>Archipelago/Players/Templates/Path of Exile.yaml</code> in any text editor, and modify to your liking.</p>
           </div>
         </div>
       </div>
@@ -833,7 +857,7 @@
         <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <p>Make sure all players' <code>.yaml</code> files are in the <code>Players/</code> folder.</p>
+            <p>Gather each player's YAML file and place it in the <code>Archipelago/Players/</code> folder.</p>
           </div>
         </div>
         <div class="step-card">
@@ -862,87 +886,77 @@
 
     <!-- ── Start Client ── -->
     <section class="guide-section" id="start-client">
-      <h2>Step 4 · Start the Client &amp; Play</h2>
+      <h2>Step 4 · Download &amp; Set Up the ArchiPoElago Client</h2>
+      <p>
+        The PoE randomizer uses its own standalone client called <strong>the ArchiPoElago client</strong>.
+        You do <em>not</em> launch it from <code>ArchipelagoLauncher.exe</code> — download and run it separately.
+      </p>
 
+      <p>Run the ArchiPoElago client. The first launch opens a <strong>five-step setup wizard</strong>.</p>
+
+      <h3>Onboarding Wizard</h3>
       <div class="step-list">
         <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <p>In <code>ArchipelagoLauncher.exe</code>, find and click <strong>Path of Exile</strong> in the client list to open the PoE client window.</p>
+            <p><strong>Paths</strong> — The client tries to detect your paths automatically. Confirm or set:</p>
+            <ul style="margin-top:0.4rem;padding-left:1.2rem;font-size:0.88rem;color:var(--text-dim);display:flex;flex-direction:column;gap:0.3rem">
+              <li><strong>Client.txt</strong> — PoE's log file, e.g. <code>C:\...\Path of Exile\logs\Client.txt</code></li>
+              <li><strong>PoE documents folder</strong> — where your filters live, e.g. <code>C:\Users\USER\Documents\My Games\Path of Exile\</code></li>
+              <li><strong>Base item filter</strong> (optional) — an existing filter (e.g. NeverSink) the AP filter will chain-import to keep your normal item highlighting.</li>
+            </ul>
+            <figure class="screenshot-figure">
+              <img src="images/client/first-time-setup-step-1.png" alt="First-time setup wizard — Paths step">
+              <figcaption>Step 1 of the setup wizard. Green ✓ means auto-detected; red ✗ means you need to Browse for the correct path.</figcaption>
+            </figure>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-body">
-            <p>In the <strong>Server</strong> bar at the top, enter your slot name, password, and server address in the format <code>SlotName:password@host:port</code> then click <strong>Connect</strong>.</p>
-            <p>If hosting yourself, it will be <code>127.0.0.1:38281</code> for the host and port.</p>
+            <p><strong>GGG Login</strong> — Click <strong>Login with GGG</strong>. A browser window opens the GGG login page.</p>
+            <p>Approve the read-only access request (character and item data only — no account changes). The browser redirects back automatically.</p>
+            <figure class="screenshot-figure">
+              <img src="images/client/poe-ggg-access.png" alt="GGG OAuth permission screen">
+              <figcaption>The GGG authorization screen. Only read-only access is requested — no account changes are possible.</figcaption>
+            </figure>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
           <div class="step-body">
-            <p>The log path should be automatically set when loading, but if it isn't working, set your log path using something like: <code>/client "C:\...\logs\Client.txt"</code> (replace with your path, and include the quotes)</p>
+            <p><strong>Connect to Archipelago</strong> — Enter your server address (e.g. <code>archipelago.gg:38281</code>), slot name, and password (if any). Click <strong>Connect</strong>.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
           <div class="step-body">
-            <p>Set your item filter: <code>/filter MyFilter.filter</code><br>
-            This should be a local filter file in your Path of Exile documents folder. This is an optional step, but one that can enhance your gameplay experience.</p>
+            <p><strong>Character</strong> — Select the PoE character you will be playing. The client reads that character's gear and gems from the GGG API to validate your state on each zone change.</p>
+            <p>If your character isn't in the list, make sure you've logged into PoE at least once with it after completing OAuth.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">5</div>
           <div class="step-body">
-            <p>Launch Path of Exile and log in.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">6</div>
-          <div class="step-body">
-            <p>Set your character in the client console: <code>/char YourCharacterName</code></p>
-            <p>You can also type <code>!apchar</code> in the in-game chat after step 7.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">7</div>
-          <div class="step-body">
-            <p>Type <code>/start</code> and enter the game. The item filter will load and you'll see highlighted items immediately.</p>
-            <p>Enter a zone to trigger your first check. Welcome to the randomizer!</p>
+            <p><strong>Ready</strong> — Click <strong>Open Dashboard</strong>. The status indicators should be green for AP connection, OAuth, Client.txt, and item filter. Click <strong>Start Monitoring</strong> on the dashboard.</p>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- ── Tracker ── -->
-    <section class="guide-section" id="poptracker">
-      <h2>Step 5 · Open the Web Tracker <span style="font-size:0.75rem;color:var(--text-dim);font-weight:normal">(Optional but Recommended)</span></h2>
-      <p>The web tracker gives you a live dashboard of your received gems, gear unlocks, equipment slots, locations, and hints — no install required.</p>
-
+      <h3>Play</h3>
       <div class="step-list">
         <div class="step-card">
-          <div class="step-num">1</div>
+          <div class="step-num">↓</div>
           <div class="step-body">
-            <p>Open <a href="https://stubobis1.github.io/pathofexile_ap/" target="_blank">stubobis1.github.io/pathofexile_ap/</a> in any browser.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <p>Enter your server address and slot name in the connection panel at the top, then click <strong>Connect</strong>.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <p>The tracker updates in real time as you receive items and check locations. Use the tabs to switch between Items, Locations, Equipment, and Hints.</p>
+            <p>Launch Path of Exile normally (Steam or standalone). Log in with the character you selected.</p>
+            <p>Enter a zone — the client validates your state, activates the item filter, and sends any initial checks. <strong>Welcome to the randomizer!</strong></p>
           </div>
         </div>
       </div>
 
-      <div class="info-box ok" style="margin-top:1rem">
-        <div class="box-title">Hover for Gem Details</div>
-        <p>Hover over any gem in the Items tab to see a full tooltip — level requirements, stat text, and description — pulled live from the Path of Exile wiki.</p>
+      <div class="info-box">
+        <div class="box-title">New to PoE? Note on Scion</div>
+        <p>Scion isn't available from the start — she's locked behind a quest in Act 3. If your yaml rolled Scion and you haven't unlocked her yet, run any other class through Act 3 once first. (Bold choice doing a randomizer as your first PoE experience, by the way.)</p>
       </div>
     </section>
 
@@ -972,7 +986,7 @@
         <div class="concept-card">
           <div class="cc-icon">⚡</div>
           <div class="cc-title">Mid-Run Toggle</div>
-          <div class="cc-body">Whisper <code>!deathlink</code> to yourself or use <code>/deathlink</code> in the client console to flip it on or off without restarting.</div>
+          <div class="cc-body">Whisper <code>!deathlink</code> to yourself in PoE chat to toggle it on or off without restarting. You can also set it in your <code>.yaml</code> before the run.</div>
         </div>
       </div>
     </section>
@@ -985,39 +999,32 @@
 
       <div class="cmd-block">
         <div class="cmd-line"><span class="cmd-code">!gems</span><span class="cmd-desc">Show all gems received</span></div>
-        <div class="cmd-line"><span class="cmd-code">!skill gems</span><span class="cmd-desc">List usable skill gems by level</span></div>
+        <div class="cmd-line"><span class="cmd-code">!main gems</span><span class="cmd-desc">List skill gems received</span></div>
         <div class="cmd-line"><span class="cmd-code">!support gems</span><span class="cmd-desc">List support gems received</span></div>
         <div class="cmd-line"><span class="cmd-code">!utility gems</span><span class="cmd-desc">List utility gems (auras, curses…)</span></div>
+        <div class="cmd-line"><span class="cmd-code">!usable gems</span><span class="cmd-desc">Show all gems usable at your current level</span></div>
+        <div class="cmd-line"><span class="cmd-code">!usable skill gems</span><span class="cmd-desc">Show skill gems usable at your current level</span></div>
+        <div class="cmd-line"><span class="cmd-code">!usable support gems</span><span class="cmd-desc">Show support gems usable at your current level</span></div>
+        <div class="cmd-line"><span class="cmd-code">!usable utility gems</span><span class="cmd-desc">Show utility gems usable at your current level</span></div>
         <div class="cmd-line"><span class="cmd-code">!gear</span><span class="cmd-desc">Show what gear you can equip</span></div>
         <div class="cmd-line"><span class="cmd-code">!weapons</span><span class="cmd-desc">Show usable weapons</span></div>
         <div class="cmd-line"><span class="cmd-code">!armor</span><span class="cmd-desc">Show usable armour</span></div>
         <div class="cmd-line"><span class="cmd-code">!links</span><span class="cmd-desc">Show your maximum allowed linked sockets</span></div>
         <div class="cmd-line"><span class="cmd-code">!flasks</span><span class="cmd-desc">Show flask slot unlocks</span></div>
-        <div class="cmd-line"><span class="cmd-code">!passive</span><span class="cmd-desc">List usable passive skill points</span></div>
+        <div class="cmd-line"><span class="cmd-code">!passives</span><span class="cmd-desc">Show available passive skill points</span></div>
         <div class="cmd-line"><span class="cmd-code">!ascendancy</span><span class="cmd-desc">Show unlocked ascendancies</span></div>
         <div class="cmd-line"><span class="cmd-code">!goal</span><span class="cmd-desc">View your current run goal</span></div>
+        <div class="cmd-line"><span class="cmd-code">!boss</span><span class="cmd-desc">Show boss progress (boss-rush goals)</span></div>
         <div class="cmd-line"><span class="cmd-code">!deathlink</span><span class="cmd-desc">Toggle DeathLink (share deaths with others)</span></div>
+        <div class="cmd-line"><span class="cmd-code">!whisper updates</span><span class="cmd-desc">Toggle item received whispers on/off</span></div>
         <div class="cmd-line"><span class="cmd-code">!help</span><span class="cmd-desc">Show all commands</span></div>
+        <div class="cmd-line"><span class="cmd-code">!ap char</span><span class="cmd-desc">Identify your active character (whisper from in-game to link it to the client)</span></div>
       </div>
 
       <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-dim)">
-        Client console commands (typed in the Archipelago client, not in PoE):
+        All other settings (paths, character, filter, connection) are configured in the
+        the <strong>ArchiPoElago client</strong> GUI — no console commands needed.
       </p>
-      <div class="cmd-block">
-        <div class="cmd-line"><span class="cmd-code">/received</span><span class="cmd-desc">List all items you've received</span></div>
-        <div class="cmd-line"><span class="cmd-code">/poe_auth</span><span class="cmd-desc">Authenticate with PoE (run once)</span></div>
-        <div class="cmd-line"><span class="cmd-code">/char Name</span><span class="cmd-desc">Set the character to track</span></div>
-        <div class="cmd-line"><span class="cmd-code">/client "path"</span><span class="cmd-desc">Set Client.txt path (quotes required)</span></div>
-        <div class="cmd-line"><span class="cmd-code">/filter name.filter</span><span class="cmd-desc">Set your local item filter</span></div>
-        <div class="cmd-line"><span class="cmd-code">/start</span><span class="cmd-desc">Start the randomizer session</span></div>
-        <div class="cmd-line"><span class="cmd-code">/deathlink</span><span class="cmd-desc">Toggle DeathLink</span></div>
-      </div>
-
-      <div class="info-box" style="margin-top:0.5rem">
-        <div class="box-title">Keyboard Shortcuts</div>
-        <p><strong>F11</strong> — restart the client if something goes wrong.<br>
-        <strong>F12</strong> — force the client to re-check your current state (useful if a check didn't send).</p>
-      </div>
     </section>
 
     <!-- ── Tips ── -->
@@ -1025,15 +1032,15 @@
       <h2>Tips &amp; Troubleshooting</h2>
 
       <ul class="tips-list">
-        <li>Keep the Archipelago client open the entire time you play. It shows item sends, receives, and player names in real time.</li>
+        <li>Keep the <strong>ArchiPoElago client</strong> open the entire time you play — it shows item sends, receives, and player names in real time. Check the Dashboard status indicators are green before entering a zone.</li>
         <li>Checks only fire on <strong>zone change</strong>. Nothing happening after a pickup is normal — just move to a new area.</li>
-        <li>If you're using a gem or gear piece you haven't unlocked, you're "out of logic" and checks won't send until you fix it. Whisper yourself <code>!gear</code> or <code>!gems</code> to verify what's allowed.</li>
-        <li>If your item filter isn't updating, check that the path is correct and that OneDrive sync isn't locking the file. Try disabling OneDrive if you see write errors.</li>
-        <li>Make sure the <code>/client</code> path points to the correct <code>Client.txt</code>. The client reads this file to detect zone changes and chat whispers.</li>
+        <li>If you're using a gem or gear piece you haven't unlocked, you're "out of logic" and checks won't send. Whisper yourself <code>!gear</code> or <code>!gems</code> to see what's allowed, or check the Equipment tab in the client.</li>
+        <li>If your item filter isn't updating, open the ArchiPoElago client Settings → Item Filter and click <strong>Regenerate filter</strong>. Make sure your PoE Documents path is correct and that OneDrive sync isn't locking the folder.</li>
+        <li>If filter commands or whispers fire while PoE isn't focused, they'll land in global chat. Increase the <strong>Zone transition delay</strong> in Settings → Game Input by 50–100 ms.</li>
         <li>Town Portals are your friend — drop items off at the stash to check them without needing to reach a full transition zone.</li>
         <li>The early levels before your first few gems arrive can be rough. There's no shame in starting with your class weapon, starter gem, and flasks unlocked in your yaml settings.</li>
         <li>Many "bad" endgame skills are perfectly fine for clearing the campaign. Use whatever you've been given!</li>
-        <li>F12 forces a re-check if you think something got missed — helpful when <code>Client.txt</code> is temporarily unreadable.</li>
+        <li>The Goal button enables as soon as you enter the goal zone. Click it and confirm to finish the run.</li>
         <li>Report bugs in the
           <a href="https://github.com/stubobis1/Archipelago/issues" target="_blank">GitHub issue tracker</a>
           or ask in the Path of Exile Archipelago Discord channel.</li>
@@ -1043,7 +1050,24 @@
   </main>
 </div>
 
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script>
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.screenshot-figure img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('open');
+    });
+  });
+  lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
   // Highlight active sidenav link on scroll
   const sections = document.querySelectorAll('.guide-section');
   const navLinks = document.querySelectorAll('#sidenav a');
