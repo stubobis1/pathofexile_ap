@@ -138,7 +138,7 @@
     .btn-primary:hover { background: #2a2a14; border-color: var(--gold); }
 
     /* ── Page Layout ── */
-    #page { flex: 1; display: flex; max-width: 1100px; width: 100%; margin: 0 auto; padding: 2rem; gap: 2rem; }
+    #page { flex: 1; display: flex; max-width: 1500px; width: 100%; margin: 0 auto; padding: 2rem; gap: 2rem; }
 
     /* ── Sidebar nav ── */
     #nav-toggle { display: none; }
@@ -838,6 +838,10 @@
           <div class="step-num">2</div>
           <div class="step-body">
             <p>Fill in the options — each one has a description. When done, click <strong>Export YAML</strong></p>
+            <figure class="screenshot-figure">
+              <img src="images/client/connected-yaml-gen.png" alt="Yaml Generator page in the client">
+              <figcaption>The built-in Yaml Generator — set your goal, starting gear, progression balancing, and more, then download the finished <code>.yaml</code>.</figcaption>
+            </figure>
           </div>
         </div>
       </div>
@@ -939,24 +943,22 @@
           <div class="step-num">5</div>
           <div class="step-body">
             <p><strong>Ready</strong> — Click <strong>Open Dashboard</strong>. The status indicators should be green for AP connection, OAuth, Client.txt, and item filter. Click <strong>Start Monitoring</strong> on the dashboard.</p>
+            <figure class="screenshot-figure">
+              <img src="images/client/connected-dashboard.png" alt="Dashboard after connecting, all status indicators green">
+              <figcaption>The Dashboard once everything is green and Monitoring is running — live event log on the right, quick stats for passives, items, locations, and goal on the left.</figcaption>
+            </figure>
           </div>
         </div>
       </div>
 
-      <h3>Play</h3>
       <div class="step-list">
         <div class="step-card">
-          <div class="step-num">↓</div>
+          <div class="step-num">Login</div>
           <div class="step-body">
             <p>Launch Path of Exile normally (Steam or standalone). Log in with the character you selected.</p>
             <p>Enter a zone — the client validates your state, activates the item filter, and sends any initial checks. <strong>Welcome to the randomizer!</strong></p>
           </div>
         </div>
-      </div>
-
-      <div class="info-box">
-        <div class="box-title">New to PoE? Note on Scion</div>
-        <p>Scion isn't available from the start — she's locked behind a quest in Act 3. If your yaml rolled Scion and you haven't unlocked her yet, run any other class through Act 3 once first. (Bold choice doing a randomizer as your first PoE experience, by the way.)</p>
       </div>
     </section>
 
@@ -1036,6 +1038,18 @@
         <li>Checks only fire on <strong>zone change</strong>. Nothing happening after a pickup is normal — just move to a new area.</li>
         <li>If you're using a gem or gear piece you haven't unlocked, you're "out of logic" and checks won't send. Whisper yourself <code>!gear</code> or <code>!gems</code> to see what's allowed, or check the Equipment tab in the client.</li>
         <li>If your item filter isn't updating, open the ArchiPoElago client Settings → Item Filter and click <strong>Regenerate filter</strong>. Make sure your PoE Documents path is correct and that OneDrive sync isn't locking the folder.</li>
+        <li>Everything from paths and OAuth to the AP connection and active character lives in the Settings page — check there first if something looks wrong.
+          <figure class="screenshot-figure">
+            <img src="images/client/connected-settings.png" alt="Settings page showing OAuth status, AP connection, and character">
+            <figcaption>Settings — OAuth status, Archipelago connection, and character selection all in one place.</figcaption>
+          </figure>
+        </li>
+        <li>The Goal button enables as soon as you enter the goal zone; the Goal tab shows a <strong>Send Goal</strong> button once your character is verified.
+          <figure class="screenshot-figure">
+            <img src="images/client/connected-goal.png" alt="Goal tab with Send Goal button enabled">
+            <figcaption>Goal tab — ready to send once the character is verified against the goal condition.</figcaption>
+          </figure>
+        </li>
         <li>If filter commands or whispers fire while PoE isn't focused, they'll land in global chat. Increase the <strong>Zone transition delay</strong> in Settings → Game Input by 50–100 ms.</li>
         <li>Town Portals are your friend — drop items off at the stash to check them without needing to reach a full transition zone.</li>
         <li>The early levels before your first few gems arrive can be rough. There's no shame in starting with your class weapon, starter gem, and flasks unlocked in your yaml settings.</li>
@@ -1043,7 +1057,13 @@
         <li>The Goal button enables as soon as you enter the goal zone. Click it and confirm to finish the run.</li>
         <li>Report bugs in the
           <a href="https://github.com/stubobis1/Archipelago/issues" target="_blank">GitHub issue tracker</a>
-          or ask in the Path of Exile Archipelago Discord channel.</li>
+          or ask in the Path of Exile Archipelago Discord channel. Attach a log export — Settings → Data →
+          <strong>Export zip</strong> bundles your config and logs into one file for the developer.
+          <figure class="screenshot-figure">
+            <img src="images/client/exporting-logs.png" alt="Settings Data section with Export zip button">
+            <figcaption>Settings → Data — Export zip bundles config and logs for a bug report.</figcaption>
+          </figure>
+        </li>
       </ul>
     </section>
 
