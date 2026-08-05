@@ -145,6 +145,7 @@ function _itemCategory(cats) {
   if (cats[0] === 'Flask') return 'Flasks';
   if (cats.includes('Base Class')) return 'Classes';
   if (cats.includes('Ascendancy')) return 'Ascendancies';
+  if (cats.includes('Exceptional')) return 'Exceptional Gems';
   if (cats[0] === 'MainSkillGem') return 'Skill Gems';
   if (cats[0] === 'SupportGem') return 'Support Gems';
   if (cats[0] === 'UtilSkillGem') return 'Utility Gems';
@@ -166,6 +167,7 @@ function _buildData(baseItems, items, bosses, levelLocs) {
     if (item.reqLevel != null) gemReq[item.name] = item.reqLevel;
   }
   POE_LOCATIONS = locs; POE_ITEMS = poeItems; GEM_LEVEL_REQ = gemReq;
+  CLASS_TREE = _buildClassTree(items);
 }
 
 async function loadGameData() {
@@ -224,6 +226,7 @@ function categorizeItemClass(cat) {
     'Skill Gems':    'gem',
     'Support Gems':  'support',
     'Utility Gems':  'util',
+    'Exceptional Gems': 'exceptional',
     'Flasks':        'flask',
     'Classes':       'class',
     'Ascendancies':  'class',
@@ -326,16 +329,22 @@ btnReconnect.addEventListener('click', () => {
   connectPanel.classList.toggle('hidden');
 });
 
-// ── Class layout (base class → ascendancies) ──────────────────────────────────
-const CLASS_TREE = [
-  { base: 'Scion',    asc: ['Ascendant','Reliquarian'] },
-  { base: 'Marauder', asc: ['Berserker','Chieftain','Juggernaut'] },
-  { base: 'Duelist',  asc: ['Champion','Gladiator','Slayer'] },
-  { base: 'Ranger',   asc: ['Deadeye','Pathfinder','Warden'] },
-  { base: 'Shadow',   asc: ['Assassin','Saboteur','Trickster'] },
-  { base: 'Witch',    asc: ['Elementalist','Necromancer','Occultist'] },
-  { base: 'Templar',  asc: ['Guardian','Hierophant','Inquisitor'] },
-];
+// ── Class layout (base class → ascendancies), derived from Items.json ─────────
+const CLASS_BASE_ORDER = ['Scion','Marauder','Duelist','Ranger','Shadow','Witch','Templar'];
+let CLASS_TREE = CLASS_BASE_ORDER.map(base => ({ base, asc: [] }));
+
+function _buildClassTree(items) {
+  const ascBy = Object.fromEntries(CLASS_BASE_ORDER.map(b => [b, []]));
+  for (const item of items) {
+    const cats = item.category || [];
+    if (!cats.includes('Ascendancy')) continue;
+    const classCat = cats.find(c => c.endsWith(' Class') && c !== 'Base Class' && c !== 'Character Class');
+    if (!classCat) continue;
+    const base = classCat.slice(0, -' Class'.length);
+    if (ascBy[base]) ascBy[base].push(item.name);
+  }
+  return CLASS_BASE_ORDER.map(base => ({ base, asc: ascBy[base] }));
+}
 
 // ── Items Rendering ───────────────────────────────────────────────────────────
 // ── Equipment Rendering ───────────────────────────────────────────────────────
@@ -535,8 +544,8 @@ function renderItems(receivedItems) {
     grouped[cat][item.name] = (grouped[cat][item.name] || 0) + 1;
   }
 
-  const GEM_CATS = new Set(['Skill Gems','Support Gems','Utility Gems']);
-  const CAT_ORDER = ['Skill Gems','Support Gems','Utility Gems','Flasks','Weapons','Armour','Progression','Other'];
+  const GEM_CATS = new Set(['Skill Gems','Support Gems','Utility Gems','Exceptional Gems']);
+  const CAT_ORDER = ['Skill Gems','Support Gems','Utility Gems','Exceptional Gems','Flasks','Weapons','Armour','Progression','Other'];
   const content = document.getElementById('items-content');
   const empty   = document.getElementById('items-empty');
   const sortBar = document.getElementById('items-sort-bar');
@@ -887,7 +896,7 @@ btnConnect.addEventListener('click', () => {
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-const GEM_CATEGORIES = new Set(['Skill Gems', 'Support Gems', 'Utility Gems']);
+const GEM_CATEGORIES = new Set(['Skill Gems', 'Support Gems', 'Utility Gems', 'Exceptional Gems']);
 loadGameData().then(() => {
   renderLocations();
   const allGemNames = Object.entries(POE_ITEMS)
